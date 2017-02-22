@@ -108,11 +108,12 @@ class Board {
 
 	draw() {
 		for (var i=0; i<29; i++) {
-			let point = this.getPointPosition(i);
-			let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-			circle.setAttribute("cx", point.x+(25*this.K));
-			circle.setAttribute("cy", point.y);
-			circle.setAttribute("r", 10*this.K);
+			var point = this.getPointPosition(i);
+			var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+			circle.setAttribute('cx', point.x+(25*this.K));
+			circle.setAttribute('cy', point.y);
+			circle.setAttribute('r', 8*this.K);
+			circle.setAttribute("fill", '#eee');
 			svg.appendChild(circle);
 		}
 	}
