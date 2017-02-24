@@ -140,20 +140,30 @@ class Board {
 	}
 }
 
-var board = new Board();
-board.draw();
 
-function drawBoard() {
+class Team {
+	constructor(name, color, id) {
+		this.name = name;
+		this.color = color ? color : '#00a2ff';
+		this.id = id ? id : 1;
+		this.currentPoint = 0;
+	}
 
-	for (var i=0; i < 29; i++) {
-		
+	addOnBoard(position) {
+		var team = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+		team.setAttribute('id', 'team-'+this.id);
+		team.setAttribute('cx', position.x+(25*this.K));
+		team.setAttribute('cy', position.y);
+		team.setAttribute('r', 4*this.K);
+		team.setAttribute("fill", this.color);
+		svg.appendChild(team);
 	}
 }
 
-function getPointPosition(number) {
+var board = new Board();
+board.draw();
 
-}
-
+console.log(new Team('Kittens'));
 
 
 
