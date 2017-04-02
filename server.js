@@ -1,27 +1,19 @@
-var path = require('path');
-var express = require('express');
-var webpack = require('webpack');
-var config = require('./webpack.config.dev');
+import express from 'express';
+import webpack from 'webpack';
+import DevServer from 'webpack-dev-server';
+import webpackConfig from './webpack.config.js';
 
-var port = 3000;
-var app = express();
-var compiler = webpack(config);
+const app = express();
 
-app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: true,
-    publicPath: config.output.publicPath
-}));
-
-app.use(require('webpack-hot-middleware')(compiler));
-
-app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'index.html'));
+const server = new DevServer(webpack(webpackConfig), {
+    publicPath: webpackConfig.output.publicPath,
+    hot: true,
+    historyApiFallback: true
 });
 
-app.listen(port, function onAppListening(err) {
-    if (err) {
-        console.error(err);
-    } else {
-        console.info('==> 🚧  Webpack development server listening on port %s', port);
+server.listen(8080, 'localhost', (err,res) => {
+    if (err){
+        return console.log(err);
     }
+    console.log(`server is up on port 8080`);
 });

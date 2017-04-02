@@ -160,11 +160,11 @@ class Team {
 	}
 }
 
-var board = new Board();
-board.draw();
 
-console.log(new Team('Kittens'));
-
+module.exports = {
+    Board,
+    Team
+};
 
 
 
