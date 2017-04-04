@@ -1,11 +1,17 @@
 import { Board, Team } from './board';
-import { Subject, Observable } from 'rxjs/Rx';
 
-var board = new Board();
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/map';
+
+
+console.log(Observable);
+
+let board = new Board();
 board.draw();
 
 console.log(new Team('Kittens'));
-
 
 
 var game = {

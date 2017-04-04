@@ -90,7 +90,7 @@ setTimeout(function() {
 	board.draw();
 }, 3000);*/
 
-
+"use strict";
 
 var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 svg.setAttribute("width", window.innerWidth);
