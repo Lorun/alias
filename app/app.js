@@ -28,29 +28,31 @@ class Words extends Component {
         this.store.dispatch(addWord('incredible', 'невероятный'));
         this.store.dispatch(addWord('imagination', 'воображение'));
         this.setState(this.store.getState());
+    }
 
-        setTimeout(() => {
-            this.store.dispatch(addWord('promotion', 'повышение'));
-            this.store.dispatch(editWord(1, 'pedestrian', 'пешеход'));
-            this.setState(this.store.getState());
-        }, 3000);
+    saveWord() {
+        this.store.dispatch(addWord('promotion', 'повышение'));
+        this.setState(this.store.getState());
     }
 
     render(props, state) {
-        const listItems = state.words.map((word) =>
-            <li>{word.text_en}: {word.text_ru}</li>
+        let listItems = state.words.map((word) =>
+            <li><b>#{word.id}</b> {word.text_en}: {word.text_ru}</li>
         );
         return(
-            <ul>
-                {listItems}
-            </ul>
+            <div class="words">
+                <button onclick={ this.saveWord.bind(this) }>Add word</button>
+                <ul>
+                    {listItems}
+                </ul>
+            </div>
         );
     }
 }
 
 
 render((
-    <div id="words">
+    <div id="wordsApp">
         <h3>Words</h3>
         <Words />
     </div>
