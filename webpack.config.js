@@ -2,31 +2,48 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const config = {
-    entry: './app/app.js',
-    output: {
-        path: path.resolve(__dirname, 'assets'),
-        filename: 'webpack.bundle.js'
-    },
 
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /(node_modules)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env']
+function buildConfig (env) {
+    var config = {
+        entry: './app/app.js',
+        output: {
+            path: path.resolve(__dirname, 'assets'),
+            filename: 'webpack.bundle.js'
+        },
+
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /(node_modules)/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['env'],
+                            plugins: [
+                                ["transform-react-jsx", { "pragma":"h" }]
+                            ]
+                        }
                     }
                 }
-            }
-        ]
-    },
+            ]
+        },
 
-    plugins: [
-        //new webpack.optimize.UglifyJsPlugin(),
-    ]
-};
+        plugins: []
+    };
 
-module.exports = config;
+    if (env === 'production') {
+        config.plugins.push(
+            new webpack.DefinePlugin({
+                'process.env':{
+                    'NODE_ENV': JSON.stringify('production')
+                }
+            }),
+            new webpack.optimize.UglifyJsPlugin()
+        );
+    }
+
+    return config;
+}
+
+module.exports = buildConfig;

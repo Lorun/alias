@@ -1,21 +1,60 @@
+import { h, render, Component } from 'preact';
+
 import { createStore } from 'redux';
 import wordsApp from './reducers';
 import { addWord, editWord, deleteWord } from './actions';
 
-let store = createStore(wordsApp);
+//let store = createStore(wordsApp);
 
-store.subscribe(() => {
-    console.log(store.getState());
-});
-
-store.dispatch(addWord('incredible', 'невероятный'));
-store.dispatch(addWord('imagination', 'воображение'));
-store.dispatch(addWord('promotion', 'повышение'));
+// store.subscribe(() => {
+//     console.log(store.getState());
+// });
 
 
 
-//store.dispatch(deleteWord(0));
-store.dispatch(editWord(1, 'pedestrian', 'пешеход'));
+
+class Words extends Component {
+    constructor() {
+        super();
+
+        this.store = createStore(wordsApp);
+        // set initial time:
+        this.state = {
+            words: []
+        };
+    }
+
+    componentDidMount() {
+        this.store.dispatch(addWord('incredible', 'невероятный'));
+        this.store.dispatch(addWord('imagination', 'воображение'));
+        this.setState(this.store.getState());
+
+        setTimeout(() => {
+            this.store.dispatch(addWord('promotion', 'повышение'));
+            this.store.dispatch(editWord(1, 'pedestrian', 'пешеход'));
+            this.setState(this.store.getState());
+        }, 3000);
+    }
+
+    render(props, state) {
+        const listItems = state.words.map((word) =>
+            <li>{word.text_en}: {word.text_ru}</li>
+        );
+        return(
+            <ul>
+                {listItems}
+            </ul>
+        );
+    }
+}
+
+
+render((
+    <div id="words">
+        <h3>Words</h3>
+        <Words />
+    </div>
+), document.body);
 
 
 /*let nextState = wordsApp(previousState.words, {
