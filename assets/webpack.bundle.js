@@ -1336,18 +1336,15 @@ var _actions = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-//let store = createStore(wordsApp);
-
-// store.subscribe(() => {
-//     console.log(store.getState());
-// });
-
+var store = (0, _redux.createStore)(_reducers2.default);
 
 var Words = function (_Component) {
     _inherits(Words, _Component);
@@ -1355,33 +1352,13 @@ var Words = function (_Component) {
     function Words() {
         _classCallCheck(this, Words);
 
-        var _this = _possibleConstructorReturn(this, (Words.__proto__ || Object.getPrototypeOf(Words)).call(this));
-
-        _this.store = (0, _redux.createStore)(_reducers2.default);
-        // set initial time:
-        _this.state = {
-            words: []
-        };
-        return _this;
+        return _possibleConstructorReturn(this, (Words.__proto__ || Object.getPrototypeOf(Words)).apply(this, arguments));
     }
 
     _createClass(Words, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.store.dispatch((0, _actions.addWord)('incredible', 'невероятный'));
-            this.store.dispatch((0, _actions.addWord)('imagination', 'воображение'));
-            this.setState(this.store.getState());
-        }
-    }, {
-        key: 'saveWord',
-        value: function saveWord() {
-            this.store.dispatch((0, _actions.addWord)('promotion', 'повышение'));
-            this.setState(this.store.getState());
-        }
-    }, {
         key: 'render',
         value: function render(props, state) {
-            var listItems = state.words.map(function (word) {
+            var listItems = props.words.map(function (word) {
                 return (0, _preact.h)(
                     'li',
                     null,
@@ -1394,17 +1371,18 @@ var Words = function (_Component) {
                     ' ',
                     word.text_en,
                     ': ',
-                    word.text_ru
+                    word.text_ru,
+                    ' ',
+                    (0, _preact.h)(
+                        'button',
+                        { onClick: props.handleDelete.bind(null, word.id) },
+                        'x'
+                    )
                 );
             });
             return (0, _preact.h)(
                 'div',
                 { 'class': 'words' },
-                (0, _preact.h)(
-                    'button',
-                    { onclick: this.saveWord.bind(this) },
-                    'Add word'
-                ),
                 (0, _preact.h)(
                     'ul',
                     null,
@@ -1417,37 +1395,102 @@ var Words = function (_Component) {
     return Words;
 }(_preact.Component);
 
-(0, _preact.render)((0, _preact.h)(
-    'div',
-    { id: 'wordsApp' },
-    (0, _preact.h)(
-        'h3',
-        null,
-        'Words'
-    ),
-    (0, _preact.h)(Words, null)
-), document.body);
+var AddWord = function (_Component2) {
+    _inherits(AddWord, _Component2);
 
-/*let nextState = wordsApp(previousState.words, {
-    type: 'ADD_WORD',
-    text_en: 'incredible',
-    text_ru: 'невероятный'
-});*/
+    function AddWord() {
+        _classCallCheck(this, AddWord);
 
-/*nextState = wordsApp(nextState.words, {
-    type: 'ADD_WORD',
-    text_en: 'imagination',
-    text_ru: 'воображение'
-});
+        return _possibleConstructorReturn(this, (AddWord.__proto__ || Object.getPrototypeOf(AddWord)).call(this));
+    }
 
-console.log(nextState);
+    _createClass(AddWord, [{
+        key: 'render',
+        value: function render(props, state) {
+            //console.log(props.handleSubmit);
+            return (0, _preact.h)(
+                'form',
+                { onSubmit: props.handleSubmit },
+                (0, _preact.h)('input', { type: 'text', name: 'text_en' }),
+                (0, _preact.h)('input', { type: 'text', name: 'text_ru' }),
+                (0, _preact.h)(
+                    'button',
+                    { type: 'submit' },
+                    'Add'
+                )
+            );
+        }
+    }]);
 
-nextState = wordsApp(nextState.words, {
-    type: 'EDIT_WORD',
-    index: 1,
-    text_en: 'imagination',
-    text_ru: 'воображение, фантазия'
-});*/
+    return AddWord;
+}(_preact.Component);
+
+var App = function (_Component3) {
+    _inherits(App, _Component3);
+
+    function App() {
+        _classCallCheck(this, App);
+
+        var _this3 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+        _this3.state = {
+            words: []
+        };
+        return _this3;
+    }
+
+    _createClass(App, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            store.dispatch((0, _actions.addWord)('incredible', 'невероятный'));
+            this.setState(store.getState());
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            event.preventDefault();
+            var text_en = event.target.elements.text_en.value;
+            var text_ru = event.target.elements.text_ru.value;
+
+            if (!text_en || !text_ru) {
+                return;
+            }
+
+            store.dispatch((0, _actions.addWord)(text_en, text_ru));
+            this.setState(store.getState());
+            event.target.reset();
+        }
+    }, {
+        key: 'handleDelete',
+        value: function handleDelete(id) {
+            store.dispatch((0, _actions.deleteWord)(id));
+            this.setState(store.getState());
+        }
+    }, {
+        key: 'render',
+        value: function render(_ref, _ref2) {
+            var words = _ref2.words;
+
+            _objectDestructuringEmpty(_ref);
+
+            return (0, _preact.h)(
+                'div',
+                { id: 'wordsApp' },
+                (0, _preact.h)(
+                    'h3',
+                    null,
+                    'Words'
+                ),
+                (0, _preact.h)(AddWord, { handleSubmit: this.handleSubmit.bind(this) }),
+                (0, _preact.h)(Words, { words: words, handleDelete: this.handleDelete.bind(this) })
+            );
+        }
+    }]);
+
+    return App;
+}(_preact.Component);
+
+(0, _preact.render)((0, _preact.h)(App, null), document.body);
 
 /*
 import { Board, Team } from './board';

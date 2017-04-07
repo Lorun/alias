@@ -4,44 +4,18 @@ import { createStore } from 'redux';
 import wordsApp from './reducers';
 import { addWord, editWord, deleteWord } from './actions';
 
-//let store = createStore(wordsApp);
-
-// store.subscribe(() => {
-//     console.log(store.getState());
-// });
-
+let store = createStore(wordsApp);
 
 
 
 class Words extends Component {
-    constructor() {
-        super();
-
-        this.store = createStore(wordsApp);
-        // set initial time:
-        this.state = {
-            words: []
-        };
-    }
-
-    componentDidMount() {
-        this.store.dispatch(addWord('incredible', 'невероятный'));
-        this.store.dispatch(addWord('imagination', 'воображение'));
-        this.setState(this.store.getState());
-    }
-
-    saveWord() {
-        this.store.dispatch(addWord('promotion', 'повышение'));
-        this.setState(this.store.getState());
-    }
 
     render(props, state) {
-        let listItems = state.words.map((word) =>
-            <li><b>#{word.id}</b> {word.text_en}: {word.text_ru}</li>
+        let listItems = props.words.map((word) =>
+            <li><b>#{word.id}</b> {word.text_en}: {word.text_ru} <button onClick={ props.handleDelete.bind(null, word.id) }>x</button></li>
         );
         return(
             <div class="words">
-                <button onclick={ this.saveWord.bind(this) }>Add word</button>
                 <ul>
                     {listItems}
                 </ul>
@@ -51,34 +25,77 @@ class Words extends Component {
 }
 
 
+class AddWord extends Component {
+    constructor() {
+        super();
+
+    }
+
+    render(props, state) {
+        //console.log(props.handleSubmit);
+        return(
+            <form onSubmit={ props.handleSubmit }>
+                <input type="text" name="text_en" />
+                <input type="text" name="text_ru" />
+                <button type="submit">Add</button>
+            </form>
+        );
+    }
+}
+
+
+class App extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            words: []
+        };
+    }
+
+    componentWillMount() {
+        store.dispatch(addWord('incredible', 'невероятный'));
+        this.setState(store.getState());
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        let text_en = event.target.elements.text_en.value;
+        let text_ru = event.target.elements.text_ru.value;
+
+        if (!text_en || !text_ru) {
+            return;
+        }
+
+        store.dispatch(addWord(text_en, text_ru));
+        this.setState(store.getState());
+        event.target.reset();
+    }
+
+    handleDelete(id) {
+        store.dispatch(deleteWord(id));
+        this.setState(store.getState());
+    }
+
+    render({}, { words }) {
+        return(
+            <div id="wordsApp">
+                <h3>Words</h3>
+                <AddWord handleSubmit={ this.handleSubmit.bind(this) } />
+                <Words words={ words } handleDelete={ this.handleDelete.bind(this) } />
+            </div>
+        );
+    }
+}
+
+
+
 render((
-    <div id="wordsApp">
-        <h3>Words</h3>
-        <Words />
-    </div>
+    <App />
 ), document.body);
 
 
-/*let nextState = wordsApp(previousState.words, {
-    type: 'ADD_WORD',
-    text_en: 'incredible',
-    text_ru: 'невероятный'
-});*/
 
-/*nextState = wordsApp(nextState.words, {
-    type: 'ADD_WORD',
-    text_en: 'imagination',
-    text_ru: 'воображение'
-});
-
-console.log(nextState);
-
-nextState = wordsApp(nextState.words, {
-    type: 'EDIT_WORD',
-    index: 1,
-    text_en: 'imagination',
-    text_ru: 'воображение, фантазия'
-});*/
 
 
 
