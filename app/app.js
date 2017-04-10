@@ -2,17 +2,20 @@ import { h, render, Component } from 'preact';
 
 import { createStore } from 'redux';
 import wordsApp from './reducers';
-import { addWord, editWord, deleteWord } from './actions';
+import { addWord, editWord, deleteWord, setEditableWord, unsetEditableWord } from './actions';
 
 let store = createStore(wordsApp);
 
 
-
-class Words extends Component {
+class WordsList extends Component {
 
     render(props, state) {
         let listItems = props.words.map((word) =>
-            <li><b>#{word.id}</b> {word.text_en}: {word.text_ru} <button onClick={ props.handleDelete.bind(null, word.id) }>x</button></li>
+            <li>
+                <b>#{word.id}</b> {word.text_en}: {word.text_ru}
+                <button onClick={ props.handleDelete.bind(null, word.id) }>×</button>
+                <button onClick={ props.handleSetEditableWord.bind(null, word.id) }>e</button>
+            </li>
         );
         return(
             <div class="words">
@@ -25,19 +28,14 @@ class Words extends Component {
 }
 
 
-class AddWord extends Component {
-    constructor() {
-        super();
-
-    }
-
-    render(props, state) {
-        //console.log(props.handleSubmit);
+class WordForm extends Component {
+    render(props) {
         return(
-            <form onSubmit={ props.handleSubmit }>
-                <input type="text" name="text_en" />
-                <input type="text" name="text_ru" />
-                <button type="submit">Add</button>
+            <form onSubmit={ props.handleSubmit.bind(this) } class="wordsApp-form">
+                <input type="hidden" name="id" value={ props.word.id || '' } />
+                <input type="text" name="text_en" value={ props.word.text_en || '' } />
+                <input type="text" name="text_ru" value={ props.word.text_ru || '' } />
+                <button type="submit">-></button>
             </form>
         );
     }
@@ -49,6 +47,8 @@ class App extends Component {
         super();
 
         this.state = {
+            editMode: false,
+            editableWord: {},
             words: []
         };
     }
@@ -60,6 +60,7 @@ class App extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        let id = +event.target.elements.id.value;
         let text_en = event.target.elements.text_en.value;
         let text_ru = event.target.elements.text_ru.value;
 
@@ -67,9 +68,27 @@ class App extends Component {
             return;
         }
 
-        store.dispatch(addWord(text_en, text_ru));
+        if (id) {
+            console.log(text_en, text_ru);
+            store.dispatch(editWord(id, text_en, text_ru));
+            store.dispatch(unsetEditableWord());
+        } else {
+            store.dispatch(addWord(text_en, text_ru));
+        }
+
         this.setState(store.getState());
+        
         event.target.reset();
+    }
+    
+    handleSetEditableWord(id) {
+        let index = this.state.words.findIndex((i) => i.id == id);
+        let word = this.state.words[index];
+
+        if (word) {
+            store.dispatch(setEditableWord(word.id, word.text_en, word.text_ru));
+            this.setState(store.getState());
+        }
     }
 
     handleDelete(id) {
@@ -77,12 +96,19 @@ class App extends Component {
         this.setState(store.getState());
     }
 
-    render({}, { words }) {
+    render({}, { words, editableWord }) {
         return(
             <div id="wordsApp">
                 <h3>Words</h3>
-                <AddWord handleSubmit={ this.handleSubmit.bind(this) } />
-                <Words words={ words } handleDelete={ this.handleDelete.bind(this) } />
+                <WordForm
+                    handleSubmit={ this.handleSubmit.bind(this) }
+                    word={ editableWord }
+                />
+                <WordsList
+                    words={ words }
+                    handleDelete={ this.handleDelete.bind(this) }
+                    handleSetEditableWord={ this.handleSetEditableWord.bind(this) }
+                />
             </div>
         );
     }

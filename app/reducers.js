@@ -1,19 +1,18 @@
 import { combineReducers } from 'redux';
-import { ADD_WORD, EDIT_WORD, DELETE_WORD } from './actions';
+import { type } from './actions';
 
 function words (state = [], action) {
     switch (action.type) {
-        case ADD_WORD:
+        case type.ADD_WORD:
             return [
-                ...state,
                 {
                     id: action.id,
                     text_en: action.text_en,
                     text_ru: action.text_ru
-                }
-
+                },
+                ...state
             ];
-        case EDIT_WORD:
+        case type.EDIT_WORD:
             return state.map((word) => {
                 if (word.id === action.id) {
                     return Object.assign({}, word, {
@@ -23,7 +22,7 @@ function words (state = [], action) {
                 }
                 return word;
             });
-        case DELETE_WORD:
+        case type.DELETE_WORD:
             return state.filter(word =>
                 word.id !== action.id
             );
@@ -32,8 +31,24 @@ function words (state = [], action) {
     }
 }
 
+function editableWord (state = {}, action) {
+    switch (action.type) {
+        case type.SET_EDITABLE_WORD:
+            return Object.assign({}, state, {
+                id: action.id,
+                text_en: action.text_en,
+                text_ru: action.text_ru
+            });
+        case type.UNSET_EDITABLE_WORD:
+            return {};
+        default:
+            return state;
+    }
+}
+
 const wordsApp = combineReducers({
-    words
+    words,
+    editableWord
 });
 
 export default wordsApp;

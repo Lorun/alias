@@ -76,15 +76,20 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var ADD_WORD = exports.ADD_WORD = 'ADD_WORD';
-var EDIT_WORD = exports.EDIT_WORD = 'EDIT_WORD';
-var DELETE_WORD = exports.DELETE_WORD = 'DELETE_WORD';
+var type = exports.type = {
+    ADD_WORD: 'ADD_WORD',
+    EDIT_WORD: 'EDIT_WORD',
+    DELETE_WORD: 'DELETE_WORD',
 
-var nextWordId = 0;
+    SET_EDITABLE_WORD: 'SET_EDITABLE_WORD',
+    UNSET_EDITABLE_WORD: 'UNSET_EDITABLE_WORD'
+};
+
+var nextWordId = 1;
 
 var addWord = exports.addWord = function addWord(text_en, text_ru) {
     return {
-        type: ADD_WORD,
+        type: type.ADD_WORD,
         id: nextWordId++,
         text_en: text_en,
         text_ru: text_ru
@@ -93,7 +98,7 @@ var addWord = exports.addWord = function addWord(text_en, text_ru) {
 
 var editWord = exports.editWord = function editWord(id, text_en, text_ru) {
     return {
-        type: EDIT_WORD,
+        type: type.EDIT_WORD,
         id: id,
         text_en: text_en,
         text_ru: text_ru
@@ -102,8 +107,23 @@ var editWord = exports.editWord = function editWord(id, text_en, text_ru) {
 
 var deleteWord = exports.deleteWord = function deleteWord(id) {
     return {
-        type: DELETE_WORD,
+        type: type.DELETE_WORD,
         id: id
+    };
+};
+
+var setEditableWord = exports.setEditableWord = function setEditableWord(id, text_en, text_ru) {
+    return {
+        type: type.SET_EDITABLE_WORD,
+        id: id,
+        text_en: text_en,
+        text_ru: text_ru
+    };
+};
+
+var unsetEditableWord = exports.unsetEditableWord = function unsetEditableWord() {
+    return {
+        type: type.SET_EDITABLE_WORD
     };
 };
 
@@ -793,13 +813,13 @@ function words() {
     var action = arguments[1];
 
     switch (action.type) {
-        case _actions.ADD_WORD:
-            return [].concat(_toConsumableArray(state), [{
+        case _actions.type.ADD_WORD:
+            return [{
                 id: action.id,
                 text_en: action.text_en,
                 text_ru: action.text_ru
-            }]);
-        case _actions.EDIT_WORD:
+            }].concat(_toConsumableArray(state));
+        case _actions.type.EDIT_WORD:
             return state.map(function (word) {
                 if (word.id === action.id) {
                     return Object.assign({}, word, {
@@ -809,7 +829,7 @@ function words() {
                 }
                 return word;
             });
-        case _actions.DELETE_WORD:
+        case _actions.type.DELETE_WORD:
             return state.filter(function (word) {
                 return word.id !== action.id;
             });
@@ -818,8 +838,27 @@ function words() {
     }
 }
 
+function editableWord() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _actions.type.SET_EDITABLE_WORD:
+            return Object.assign({}, state, {
+                id: action.id,
+                text_en: action.text_en,
+                text_ru: action.text_ru
+            });
+        case _actions.type.UNSET_EDITABLE_WORD:
+            return {};
+        default:
+            return state;
+    }
+}
+
 var wordsApp = (0, _redux.combineReducers)({
-    words: words
+    words: words,
+    editableWord: editableWord
 });
 
 exports.default = wordsApp;
@@ -1346,16 +1385,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var store = (0, _redux.createStore)(_reducers2.default);
 
-var Words = function (_Component) {
-    _inherits(Words, _Component);
+var WordsList = function (_Component) {
+    _inherits(WordsList, _Component);
 
-    function Words() {
-        _classCallCheck(this, Words);
+    function WordsList() {
+        _classCallCheck(this, WordsList);
 
-        return _possibleConstructorReturn(this, (Words.__proto__ || Object.getPrototypeOf(Words)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (WordsList.__proto__ || Object.getPrototypeOf(WordsList)).apply(this, arguments));
     }
 
-    _createClass(Words, [{
+    _createClass(WordsList, [{
         key: 'render',
         value: function render(props, state) {
             var listItems = props.words.map(function (word) {
@@ -1372,11 +1411,15 @@ var Words = function (_Component) {
                     word.text_en,
                     ': ',
                     word.text_ru,
-                    ' ',
                     (0, _preact.h)(
                         'button',
                         { onClick: props.handleDelete.bind(null, word.id) },
-                        'x'
+                        '\xD7'
+                    ),
+                    (0, _preact.h)(
+                        'button',
+                        { onClick: props.handleSetEditableWord.bind(null, word.id) },
+                        'e'
                     )
                 );
             });
@@ -1392,37 +1435,37 @@ var Words = function (_Component) {
         }
     }]);
 
-    return Words;
+    return WordsList;
 }(_preact.Component);
 
-var AddWord = function (_Component2) {
-    _inherits(AddWord, _Component2);
+var WordForm = function (_Component2) {
+    _inherits(WordForm, _Component2);
 
-    function AddWord() {
-        _classCallCheck(this, AddWord);
+    function WordForm() {
+        _classCallCheck(this, WordForm);
 
-        return _possibleConstructorReturn(this, (AddWord.__proto__ || Object.getPrototypeOf(AddWord)).call(this));
+        return _possibleConstructorReturn(this, (WordForm.__proto__ || Object.getPrototypeOf(WordForm)).apply(this, arguments));
     }
 
-    _createClass(AddWord, [{
+    _createClass(WordForm, [{
         key: 'render',
-        value: function render(props, state) {
-            //console.log(props.handleSubmit);
+        value: function render(props) {
             return (0, _preact.h)(
                 'form',
-                { onSubmit: props.handleSubmit },
-                (0, _preact.h)('input', { type: 'text', name: 'text_en' }),
-                (0, _preact.h)('input', { type: 'text', name: 'text_ru' }),
+                { onSubmit: props.handleSubmit.bind(this), 'class': 'wordsApp-form' },
+                (0, _preact.h)('input', { type: 'hidden', name: 'id', value: props.word.id || '' }),
+                (0, _preact.h)('input', { type: 'text', name: 'text_en', value: props.word.text_en || '' }),
+                (0, _preact.h)('input', { type: 'text', name: 'text_ru', value: props.word.text_ru || '' }),
                 (0, _preact.h)(
                     'button',
                     { type: 'submit' },
-                    'Add'
+                    '->'
                 )
             );
         }
     }]);
 
-    return AddWord;
+    return WordForm;
 }(_preact.Component);
 
 var App = function (_Component3) {
@@ -1434,6 +1477,8 @@ var App = function (_Component3) {
         var _this3 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
         _this3.state = {
+            editMode: false,
+            editableWord: {},
             words: []
         };
         return _this3;
@@ -1449,6 +1494,7 @@ var App = function (_Component3) {
         key: 'handleSubmit',
         value: function handleSubmit(event) {
             event.preventDefault();
+            var id = +event.target.elements.id.value;
             var text_en = event.target.elements.text_en.value;
             var text_ru = event.target.elements.text_ru.value;
 
@@ -1456,9 +1502,30 @@ var App = function (_Component3) {
                 return;
             }
 
-            store.dispatch((0, _actions.addWord)(text_en, text_ru));
+            if (id) {
+                console.log(text_en, text_ru);
+                store.dispatch((0, _actions.editWord)(id, text_en, text_ru));
+                store.dispatch((0, _actions.unsetEditableWord)());
+            } else {
+                store.dispatch((0, _actions.addWord)(text_en, text_ru));
+            }
+
             this.setState(store.getState());
+
             event.target.reset();
+        }
+    }, {
+        key: 'handleSetEditableWord',
+        value: function handleSetEditableWord(id) {
+            var index = this.state.words.findIndex(function (i) {
+                return i.id == id;
+            });
+            var word = this.state.words[index];
+
+            if (word) {
+                store.dispatch((0, _actions.setEditableWord)(word.id, word.text_en, word.text_ru));
+                this.setState(store.getState());
+            }
         }
     }, {
         key: 'handleDelete',
@@ -1469,7 +1536,8 @@ var App = function (_Component3) {
     }, {
         key: 'render',
         value: function render(_ref, _ref2) {
-            var words = _ref2.words;
+            var words = _ref2.words,
+                editableWord = _ref2.editableWord;
 
             _objectDestructuringEmpty(_ref);
 
@@ -1481,8 +1549,15 @@ var App = function (_Component3) {
                     null,
                     'Words'
                 ),
-                (0, _preact.h)(AddWord, { handleSubmit: this.handleSubmit.bind(this) }),
-                (0, _preact.h)(Words, { words: words, handleDelete: this.handleDelete.bind(this) })
+                (0, _preact.h)(WordForm, {
+                    handleSubmit: this.handleSubmit.bind(this),
+                    word: editableWord
+                }),
+                (0, _preact.h)(WordsList, {
+                    words: words,
+                    handleDelete: this.handleDelete.bind(this),
+                    handleSetEditableWord: this.handleSetEditableWord.bind(this)
+                })
             );
         }
     }]);
