@@ -803,25 +803,27 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 function words(state = {}, action) {
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_1__actions__["f" /* type */].ADD_WORD:
-            let nextState = _extends({}, state);
-            nextState[action.id] = {
-                id: action.id,
-                text_en: action.text_en,
-                text_ru: action.text_ru
-            };
-            return nextState;
-        case __WEBPACK_IMPORTED_MODULE_1__actions__["f" /* type */].EDIT_WORD:
-            return state.map(word => {
-                if (word.id === action.id) {
-                    return Object.assign({}, word, {
-                        text_en: action.text_en,
-                        text_ru: action.text_ru
-                    });
+            return _extends({}, state, {
+                [action.id]: {
+                    id: action.id,
+                    text_en: action.text_en,
+                    text_ru: action.text_ru
                 }
-                return word;
+            });
+        case __WEBPACK_IMPORTED_MODULE_1__actions__["f" /* type */].EDIT_WORD:
+            if (!state[action.id]) {
+                return state;
+            }
+            return _extends({}, state, {
+                [action.id]: _extends({}, state[action.id], {
+                    text_en: action.text_en,
+                    text_ru: action.text_ru
+                })
             });
         case __WEBPACK_IMPORTED_MODULE_1__actions__["f" /* type */].DELETE_WORD:
-            return state.filter(word => word.id !== action.id);
+            const nextState = _extends({}, state);
+            delete nextState[action.id];
+            return nextState;
         default:
             return state;
     }
@@ -1362,7 +1364,7 @@ let store = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_redux__["a" /* cre
 class WordsList extends __WEBPACK_IMPORTED_MODULE_0_preact__["Component"] {
 
     render(props, state) {
-        let listItems = Object.keys(props.words).map(id => {
+        let listItems = Object.keys(props.words).sort((a, b) => b - a).map(id => {
             let word = props.words[id];
             return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
                 'li',
@@ -1447,7 +1449,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_preact__["Component"] {
         }
 
         if (id) {
-            console.log(text_en, text_ru);
             store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__actions__["b" /* editWord */])(id, text_en, text_ru));
             store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__actions__["c" /* unsetEditableWord */])());
         } else {
@@ -1460,8 +1461,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_preact__["Component"] {
     }
 
     handleSetEditableWord(id) {
-        let index = this.state.words.findIndex(i => i.id === id);
-        let word = this.state.words[index];
+        let word = this.state.words[id];
 
         if (word) {
             store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__actions__["d" /* setEditableWord */])(word.id, word.text_en, word.text_ru));

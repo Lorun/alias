@@ -10,7 +10,7 @@ let store = createStore(wordsApp);
 class WordsList extends Component {
 
     render(props, state) {
-        let listItems = Object.keys(props.words).map((id) => {
+        let listItems = Object.keys(props.words).sort((a, b) => b - a).map((id) => {
             let word = props.words[id];
             return (
                 <li>
@@ -74,7 +74,6 @@ class App extends Component {
         }
 
         if (id) {
-            console.log(text_en, text_ru);
             store.dispatch(editWord(id, text_en, text_ru));
             store.dispatch(unsetEditableWord());
         } else {
@@ -87,8 +86,7 @@ class App extends Component {
     }
 
     handleSetEditableWord(id) {
-        let index = this.state.words.findIndex((i) => i.id === id);
-        let word = this.state.words[index];
+        let word = this.state.words[id];
 
         if (word) {
             store.dispatch(setEditableWord(word.id, word.text_en, word.text_ru));

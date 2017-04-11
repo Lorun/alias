@@ -4,27 +4,30 @@ import { type } from './actions';
 function words (state = {}, action) {
     switch (action.type) {
         case type.ADD_WORD:
-            let nextState = {...state};
-            nextState[action.id] = {
-                id: action.id,
-                text_en: action.text_en,
-                text_ru: action.text_ru
-            };
-            return nextState;
-        case type.EDIT_WORD:
-            return state.map((word) => {
-                if (word.id === action.id) {
-                    return Object.assign({}, word, {
-                        text_en: action.text_en,
-                        text_ru: action.text_ru
-                    })
+            return {
+                ...state,
+                [action.id]: {
+                    id: action.id,
+                    text_en: action.text_en,
+                    text_ru: action.text_ru
                 }
-                return word;
-            });
+            };
+        case type.EDIT_WORD:
+            if (!state[action.id]) {
+                return state;
+            }
+            return {
+                ...state,
+                [action.id]: {
+                    ...state[action.id],
+                    text_en: action.text_en,
+                    text_ru: action.text_ru
+                }
+            };
         case type.DELETE_WORD:
-            return state.filter(word =>
-                word.id !== action.id
-            );
+            const nextState = { ...state };
+            delete nextState[action.id];
+            return nextState;
         default:
             return state;
     }
