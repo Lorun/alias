@@ -10,13 +10,16 @@ let store = createStore(wordsApp);
 class WordsList extends Component {
 
     render(props, state) {
-        let listItems = props.words.map((word) =>
-            <li>
-                <b>#{word.id}</b> {word.text_en}: {word.text_ru}
-                <button onClick={ props.handleDelete.bind(null, word.id) }>×</button>
-                <button onClick={ props.handleSetEditableWord.bind(null, word.id) }>e</button>
-            </li>
-        );
+        let listItems = Object.keys(props.words).map((id) => {
+            let word = props.words[id];
+            return (
+                <li>
+                    <b>#{word.id}</b> {word.text_en}: {word.text_ru}
+                    <button onClick={ props.handleDelete.bind(null, word.id) }>×</button>
+                    <button onClick={ props.handleSetEditableWord.bind(null, word.id) }>e</button>
+                </li>
+            );
+        });
         return(
             <div class="words">
                 <ul>
@@ -38,7 +41,7 @@ class WordForm extends Component {
                 <button type="submit">-></button>
             </form>
         );
-    }
+    };
 }
 
 
@@ -55,7 +58,9 @@ class App extends Component {
 
     componentWillMount() {
         store.dispatch(addWord('incredible', 'невероятный'));
+        store.dispatch(addWord('1incredible', 'невероятный'));
         this.setState(store.getState());
+        console.log(this.state);
     }
 
     handleSubmit(event) {
@@ -77,12 +82,12 @@ class App extends Component {
         }
 
         this.setState(store.getState());
-        
+
         event.target.reset();
     }
-    
+
     handleSetEditableWord(id) {
-        let index = this.state.words.findIndex((i) => i.id == id);
+        let index = this.state.words.findIndex((i) => i.id === id);
         let word = this.state.words[index];
 
         if (word) {

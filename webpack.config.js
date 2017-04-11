@@ -19,7 +19,7 @@ function buildConfig (env) {
                     use: {
                         loader: 'babel-loader',
                         options: {
-                            presets: ['env'],
+                            presets: ['es2017', 'stage-0'],
                             plugins: [
                                 ["transform-react-jsx", { "pragma":"h" }]
                             ]

@@ -1,17 +1,16 @@
 import { combineReducers } from 'redux';
 import { type } from './actions';
 
-function words (state = [], action) {
+function words (state = {}, action) {
     switch (action.type) {
         case type.ADD_WORD:
-            return [
-                {
-                    id: action.id,
-                    text_en: action.text_en,
-                    text_ru: action.text_ru
-                },
-                ...state
-            ];
+            let nextState = {...state};
+            nextState[action.id] = {
+                id: action.id,
+                text_en: action.text_en,
+                text_ru: action.text_ru
+            };
+            return nextState;
         case type.EDIT_WORD:
             return state.map((word) => {
                 if (word.id === action.id) {
