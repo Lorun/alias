@@ -4,7 +4,6 @@ import { createStore } from 'redux';
 import { wordsApp } from './reducers';
 import { addWord, editWord, deleteWord, setEditableWord, unsetEditableWord } from './actions';
 
-require('./../public/sass/style.scss');
 
 let store = createStore(wordsApp);
 
