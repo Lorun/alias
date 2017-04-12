@@ -82,7 +82,8 @@ var type = exports.type = {
     DELETE_WORD: 'DELETE_WORD',
 
     SET_EDITABLE_WORD: 'SET_EDITABLE_WORD',
-    UNSET_EDITABLE_WORD: 'UNSET_EDITABLE_WORD'
+    UNSET_EDITABLE_WORD: 'UNSET_EDITABLE_WORD',
+    TOGGLE_EDIT_MODE: 'TOGGLE_EDIT_MODE'
 };
 
 var nextWordId = 1;
@@ -124,6 +125,12 @@ var setEditableWord = exports.setEditableWord = function setEditableWord(id, tex
 var unsetEditableWord = exports.unsetEditableWord = function unsetEditableWord() {
     return {
         type: type.SET_EDITABLE_WORD
+    };
+};
+
+var toggleEditMode = exports.toggleEditMode = function toggleEditMode() {
+    return {
+        type: type.TOGGLE_EDIT_MODE
     };
 };
 
@@ -857,9 +864,22 @@ function editableWord() {
     }
 }
 
+function editMode() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _actions.type.TOGGLE_EDIT_MODE:
+            return !state;
+        default:
+            return state;
+    }
+}
+
 var wordsApp = exports.wordsApp = (0, _redux.combineReducers)({
     words: words,
-    editableWord: editableWord
+    editableWord: editableWord,
+    editMode: editMode
 });
 
 /***/ }),
@@ -1398,7 +1418,7 @@ var WordsList = function (_Component) {
                 var word = props.words[id];
                 return (0, _preact.h)(
                     'li',
-                    null,
+                    { className: 'wordsList-item' },
                     (0, _preact.h)(
                         'b',
                         null,
@@ -1411,19 +1431,19 @@ var WordsList = function (_Component) {
                     word.text_ru,
                     (0, _preact.h)(
                         'button',
-                        { onClick: props.handleDelete.bind(null, word.id) },
+                        { onClick: props.handleDelete.bind(null, word.id), className: 'wordsList-handle' },
                         '\xD7'
                     ),
                     (0, _preact.h)(
                         'button',
-                        { onClick: props.handleSetEditableWord.bind(null, word.id) },
+                        { onClick: props.handleSetEditableWord.bind(null, word.id), className: 'wordsList-handle' },
                         'e'
                     )
                 );
             });
             return (0, _preact.h)(
                 'div',
-                { 'class': 'words' },
+                { className: 'wordsApp-wordsList' },
                 (0, _preact.h)(
                     'ul',
                     null,
@@ -1530,6 +1550,12 @@ var App = function (_Component3) {
             this.setState(store.getState());
         }
     }, {
+        key: 'toggleEditMode',
+        value: function toggleEditMode() {
+            store.dispatch((0, _actions.toggleEditMode)());
+            this.setState(store.getState());
+        }
+    }, {
         key: 'render',
         value: function render(_ref, _ref2) {
             var words = _ref2.words,
@@ -1539,11 +1565,16 @@ var App = function (_Component3) {
 
             return (0, _preact.h)(
                 'div',
-                { id: 'wordsApp' },
+                { id: 'wordsApp', className: this.state.editMode ? 'is-editMode' : '' },
                 (0, _preact.h)(
                     'h3',
                     null,
-                    'Words'
+                    'Words ',
+                    (0, _preact.h)(
+                        'button',
+                        { onClick: this.toggleEditMode.bind(this) },
+                        'Edit'
+                    )
                 ),
                 (0, _preact.h)(WordForm, {
                     handleSubmit: this.handleSubmit.bind(this),

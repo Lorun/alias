@@ -2,7 +2,7 @@ import { h, render, Component } from 'preact';
 
 import { createStore } from 'redux';
 import { wordsApp } from './reducers';
-import { addWord, editWord, deleteWord, setEditableWord, unsetEditableWord } from './actions';
+import { addWord, editWord, deleteWord, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
 
 
 let store = createStore(wordsApp);
@@ -14,15 +14,15 @@ class WordsList extends Component {
         let listItems = Object.keys(props.words).sort((a, b) => b - a).map((id) => {
             let word = props.words[id];
             return (
-                <li>
+                <li className="wordsList-item">
                     <b>#{word.id}</b> {word.text_en}: {word.text_ru}
-                    <button onClick={ props.handleDelete.bind(null, word.id) }>×</button>
-                    <button onClick={ props.handleSetEditableWord.bind(null, word.id) }>e</button>
+                    <button onClick={ props.handleDelete.bind(null, word.id) } className="wordsList-handle">×</button>
+                    <button onClick={ props.handleSetEditableWord.bind(null, word.id) } className="wordsList-handle">e</button>
                 </li>
             );
         });
         return(
-            <div class="words">
+            <div className="wordsApp-wordsList">
                 <ul>
                     {listItems}
                 </ul>
@@ -100,10 +100,15 @@ class App extends Component {
         this.setState(store.getState());
     }
 
+    toggleEditMode() {
+        store.dispatch(toggleEditMode());
+        this.setState(store.getState());
+    }
+
     render({}, { words, editableWord }) {
         return(
-            <div id="wordsApp">
-                <h3>Words</h3>
+            <div id="wordsApp" className={this.state.editMode ? 'is-editMode' : ''}>
+                <h3>Words <button onClick={this.toggleEditMode.bind(this)}>Edit</button></h3>
                 <WordForm
                     handleSubmit={ this.handleSubmit.bind(this) }
                     word={ editableWord }

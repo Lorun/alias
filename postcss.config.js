@@ -6,6 +6,15 @@ module.exports = (ctx) => ({
         'postcss-css-variables': {},
         'postcss-simple-vars': {},
         'postcss-nested': {},
+        'postcss-pxtorem': {
+            rootValue: 16,
+            unitPrecision: 5,
+            propList: ['font-size', 'line-height', 'margin*', 'padding*'],
+            selectorBlackList: ['html'],
+            replace: true,
+            mediaQuery: false,
+            minPixelValue: 0
+        },
         'autoprefixer': {},
     }
 })

@@ -48,7 +48,17 @@ function editableWord (state = {}, action) {
     }
 }
 
+function editMode(state = false, action) {
+    switch (action.type) {
+        case type.TOGGLE_EDIT_MODE:
+            return !state;
+        default:
+            return state;
+    }
+}
+
 export const wordsApp = combineReducers({
-    words: words,
-    editableWord: editableWord
+    words,
+    editableWord,
+    editMode
 });

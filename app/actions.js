@@ -5,11 +5,12 @@ export const type = {
     DELETE_WORD: 'DELETE_WORD',
 
     SET_EDITABLE_WORD: 'SET_EDITABLE_WORD',
-    UNSET_EDITABLE_WORD: 'UNSET_EDITABLE_WORD'
+    UNSET_EDITABLE_WORD: 'UNSET_EDITABLE_WORD',
+    TOGGLE_EDIT_MODE: 'TOGGLE_EDIT_MODE'
 };
     
 
-var nextWordId = 1;
+let nextWordId = 1;
 
 
 export const addWord = (text_en, text_ru) => ({
@@ -41,4 +42,8 @@ export const setEditableWord = (id, text_en, text_ru) => ({
 
 export const unsetEditableWord = () => ({
     type: type.SET_EDITABLE_WORD
+});
+
+export const toggleEditMode = () => ({
+    type: type.TOGGLE_EDIT_MODE,
 });
