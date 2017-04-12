@@ -13,8 +13,9 @@ class WordsList extends Component {
     render(props, state) {
         let listItems = Object.keys(props.words).sort((a, b) => b - a).map((id) => {
             let word = props.words[id];
+            let className = 'wordsList-item' + (props.editableWord.id && props.editableWord.id === +id ? ' is-editable' : '');
             return (
-                <li className="wordsList-item">
+                <li className={className}>
                     <b>#{word.id}</b> {word.text_en}: {word.text_ru}
                     <button onClick={ props.handleDelete.bind(null, word.id) } className="wordsList-handle">×</button>
                     <button onClick={ props.handleSetEditableWord.bind(null, word.id) } className="wordsList-handle">e</button>
@@ -97,11 +98,17 @@ class App extends Component {
 
     handleDelete(id) {
         store.dispatch(deleteWord(id));
+
+        if (id === this.state.editableWord.id) {
+            store.dispatch(unsetEditableWord());
+        }
+
         this.setState(store.getState());
     }
 
     toggleEditMode() {
         store.dispatch(toggleEditMode());
+        store.dispatch(unsetEditableWord());
         this.setState(store.getState());
     }
 
@@ -115,6 +122,7 @@ class App extends Component {
                 />
                 <WordsList
                     words={ words }
+                    editableWord={ editableWord }
                     handleDelete={ this.handleDelete.bind(this) }
                     handleSetEditableWord={ this.handleSetEditableWord.bind(this) }
                 />

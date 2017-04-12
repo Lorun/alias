@@ -41,7 +41,7 @@ export const setEditableWord = (id, text_en, text_ru) => ({
 });
 
 export const unsetEditableWord = () => ({
-    type: type.SET_EDITABLE_WORD
+    type: type.UNSET_EDITABLE_WORD
 });
 
 export const toggleEditMode = () => ({

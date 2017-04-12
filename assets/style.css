@@ -421,6 +421,12 @@ a {
 .wordsApp-wordsList .wordsList-handle {
     display: none;
 }
+.wordsApp-wordsList .wordsList-item {
+    padding: 0.3125rem 0.625rem;
+}
+.wordsApp-wordsList .wordsList-item.is-editable {
+    background-color: #abffd1;
+}
 .is-editMode .wordsApp-wordsList .wordsList-handle {
     display: inline-block;
 }

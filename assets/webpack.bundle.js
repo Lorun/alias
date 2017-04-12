@@ -124,7 +124,7 @@ var setEditableWord = exports.setEditableWord = function setEditableWord(id, tex
 
 var unsetEditableWord = exports.unsetEditableWord = function unsetEditableWord() {
     return {
-        type: type.SET_EDITABLE_WORD
+        type: type.UNSET_EDITABLE_WORD
     };
 };
 
@@ -1416,9 +1416,10 @@ var WordsList = function (_Component) {
                 return b - a;
             }).map(function (id) {
                 var word = props.words[id];
+                var className = 'wordsList-item' + (props.editableWord.id && props.editableWord.id === +id ? ' is-editable' : '');
                 return (0, _preact.h)(
                     'li',
-                    { className: 'wordsList-item' },
+                    { className: className },
                     (0, _preact.h)(
                         'b',
                         null,
@@ -1547,12 +1548,18 @@ var App = function (_Component3) {
         key: 'handleDelete',
         value: function handleDelete(id) {
             store.dispatch((0, _actions.deleteWord)(id));
+
+            if (id === this.state.editableWord.id) {
+                store.dispatch((0, _actions.unsetEditableWord)());
+            }
+
             this.setState(store.getState());
         }
     }, {
         key: 'toggleEditMode',
         value: function toggleEditMode() {
             store.dispatch((0, _actions.toggleEditMode)());
+            store.dispatch((0, _actions.unsetEditableWord)());
             this.setState(store.getState());
         }
     }, {
@@ -1582,6 +1589,7 @@ var App = function (_Component3) {
                 }),
                 (0, _preact.h)(WordsList, {
                     words: words,
+                    editableWord: editableWord,
                     handleDelete: this.handleDelete.bind(this),
                     handleSetEditableWord: this.handleSetEditableWord.bind(this)
                 })
