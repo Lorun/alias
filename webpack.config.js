@@ -1,6 +1,8 @@
 
 const webpack = require('webpack');
 const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractSASS = new ExtractTextPlugin('style.css');
 
 
 function buildConfig (env) {
@@ -19,17 +21,23 @@ function buildConfig (env) {
                     use: {
                         loader: 'babel-loader',
                         options: {
-                            presets: ['es2017', 'stage-0'],
+                            presets: ['env', 'stage-0'],
                             plugins: [
                                 ["transform-react-jsx", { "pragma":"h" }]
                             ]
                         }
                     }
+                },
+                {
+                    test: /\.scss$/,
+                    use: extractSASS.extract(["css-loader", "sass-loader"])
                 }
             ]
         },
 
-        plugins: []
+        plugins: [
+            extractSASS
+        ]
     };
 
     if (env === 'production') {

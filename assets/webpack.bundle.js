@@ -63,16 +63,20 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-const type = {
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var type = exports.type = {
     ADD_WORD: 'ADD_WORD',
     EDIT_WORD: 'EDIT_WORD',
     DELETE_WORD: 'DELETE_WORD',
@@ -80,67 +84,66 @@ const type = {
     SET_EDITABLE_WORD: 'SET_EDITABLE_WORD',
     UNSET_EDITABLE_WORD: 'UNSET_EDITABLE_WORD'
 };
-/* harmony export (immutable) */ __webpack_exports__["f"] = type;
 
+var nextWordId = 1;
 
-let nextWordId = 1;
+var addWord = exports.addWord = function addWord(text_en, text_ru) {
+    return {
+        type: type.ADD_WORD,
+        id: nextWordId++,
+        text_en: text_en,
+        text_ru: text_ru
+    };
+};
 
-const addWord = (text_en, text_ru) => ({
-    type: type.ADD_WORD,
-    id: nextWordId++,
-    text_en,
-    text_ru
-});
-/* harmony export (immutable) */ __webpack_exports__["a"] = addWord;
+var editWord = exports.editWord = function editWord(id, text_en, text_ru) {
+    return {
+        type: type.EDIT_WORD,
+        id: id,
+        text_en: text_en,
+        text_ru: text_ru
+    };
+};
 
+var deleteWord = exports.deleteWord = function deleteWord(id) {
+    return {
+        type: type.DELETE_WORD,
+        id: id
+    };
+};
 
-const editWord = (id, text_en, text_ru) => ({
-    type: type.EDIT_WORD,
-    id,
-    text_en,
-    text_ru
-});
-/* harmony export (immutable) */ __webpack_exports__["b"] = editWord;
+var setEditableWord = exports.setEditableWord = function setEditableWord(id, text_en, text_ru) {
+    return {
+        type: type.SET_EDITABLE_WORD,
+        id: id,
+        text_en: text_en,
+        text_ru: text_ru
+    };
+};
 
-
-const deleteWord = id => ({
-    type: type.DELETE_WORD,
-    id
-});
-/* harmony export (immutable) */ __webpack_exports__["e"] = deleteWord;
-
-
-const setEditableWord = (id, text_en, text_ru) => ({
-    type: type.SET_EDITABLE_WORD,
-    id,
-    text_en,
-    text_ru
-});
-/* harmony export (immutable) */ __webpack_exports__["d"] = setEditableWord;
-
-
-const unsetEditableWord = () => ({
-    type: type.SET_EDITABLE_WORD
-});
-/* harmony export (immutable) */ __webpack_exports__["c"] = unsetEditableWord;
-
+var unsetEditableWord = exports.unsetEditableWord = function unsetEditableWord() {
+    return {
+        type: type.SET_EDITABLE_WORD
+    };
+};
 
 /***/ }),
 /* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(20);
+/* WEBPACK VAR INJECTION */(function(process) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(7);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__createStore__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__combineReducers__["a"]; });
-/* unused harmony reexport bindActionCreators */
-/* unused harmony reexport applyMiddleware */
-/* unused harmony reexport compose */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "createStore", function() { return __WEBPACK_IMPORTED_MODULE_0__createStore__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "combineReducers", function() { return __WEBPACK_IMPORTED_MODULE_1__combineReducers__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "bindActionCreators", function() { return __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "applyMiddleware", function() { return __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "compose", function() { return __WEBPACK_IMPORTED_MODULE_4__compose__["a"]; });
 
 
 
@@ -166,7 +169,7 @@ if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' 
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(19);
 
 
 /** Built-in value references. */
@@ -180,9 +183,9 @@ var Symbol = __WEBPACK_IMPORTED_MODULE_0__root_js__["a" /* default */].Symbol;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(20);
 
 
 
@@ -480,7 +483,7 @@ function compose() {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_symbol_observable__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ActionTypes; });
 /* harmony export (immutable) */ __webpack_exports__["a"] = createStore;
@@ -790,38 +793,45 @@ module.exports = g;
 
 /***/ }),
 /* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions__ = __webpack_require__(0);
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.wordsApp = undefined;
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _redux = __webpack_require__(1);
 
+var _actions = __webpack_require__(0);
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function words(state = {}, action) {
+function words() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var action = arguments[1];
+
     switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_1__actions__["f" /* type */].ADD_WORD:
-            return _extends({}, state, {
-                [action.id]: {
-                    id: action.id,
-                    text_en: action.text_en,
-                    text_ru: action.text_ru
-                }
-            });
-        case __WEBPACK_IMPORTED_MODULE_1__actions__["f" /* type */].EDIT_WORD:
+        case _actions.type.ADD_WORD:
+            return _extends({}, state, _defineProperty({}, action.id, {
+                id: action.id,
+                text_en: action.text_en,
+                text_ru: action.text_ru
+            }));
+        case _actions.type.EDIT_WORD:
             if (!state[action.id]) {
                 return state;
             }
-            return _extends({}, state, {
-                [action.id]: _extends({}, state[action.id], {
-                    text_en: action.text_en,
-                    text_ru: action.text_ru
-                })
-            });
-        case __WEBPACK_IMPORTED_MODULE_1__actions__["f" /* type */].DELETE_WORD:
-            const nextState = _extends({}, state);
+            return _extends({}, state, _defineProperty({}, action.id, _extends({}, state[action.id], {
+                text_en: action.text_en,
+                text_ru: action.text_ru
+            })));
+        case _actions.type.DELETE_WORD:
+            var nextState = _extends({}, state);
             delete nextState[action.id];
             return nextState;
         default:
@@ -829,30 +839,37 @@ function words(state = {}, action) {
     }
 }
 
-function editableWord(state = {}, action) {
+function editableWord() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var action = arguments[1];
+
     switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_1__actions__["f" /* type */].SET_EDITABLE_WORD:
+        case _actions.type.SET_EDITABLE_WORD:
             return Object.assign({}, state, {
                 id: action.id,
                 text_en: action.text_en,
                 text_ru: action.text_ru
             });
-        case __WEBPACK_IMPORTED_MODULE_1__actions__["f" /* type */].UNSET_EDITABLE_WORD:
+        case _actions.type.UNSET_EDITABLE_WORD:
             return {};
         default:
             return state;
     }
 }
 
-const wordsApp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["b" /* combineReducers */])({
-    words,
-    editableWord
+var wordsApp = exports.wordsApp = (0, _redux.combineReducers)({
+    words: words,
+    editableWord: editableWord
 });
-
-/* harmony default export */ __webpack_exports__["a"] = (wordsApp);
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 !function(global, factory) {
@@ -1343,160 +1360,216 @@ const wordsApp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["b" /
 //# sourceMappingURL=preact.js.map
 
 /***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_preact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_preact__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__reducers__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions__ = __webpack_require__(0);
 
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _preact = __webpack_require__(11);
 
+var _redux = __webpack_require__(1);
 
+var _reducers = __webpack_require__(9);
 
-let store = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_redux__["a" /* createStore */])(__WEBPACK_IMPORTED_MODULE_2__reducers__["a" /* default */]);
+var _actions = __webpack_require__(0);
 
-class WordsList extends __WEBPACK_IMPORTED_MODULE_0_preact__["Component"] {
+function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
 
-    render(props, state) {
-        let listItems = Object.keys(props.words).sort((a, b) => b - a).map(id => {
-            let word = props.words[id];
-            return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-                'li',
-                null,
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-                    'b',
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+__webpack_require__(10);
+
+var store = (0, _redux.createStore)(_reducers.wordsApp);
+
+var WordsList = function (_Component) {
+    _inherits(WordsList, _Component);
+
+    function WordsList() {
+        _classCallCheck(this, WordsList);
+
+        return _possibleConstructorReturn(this, (WordsList.__proto__ || Object.getPrototypeOf(WordsList)).apply(this, arguments));
+    }
+
+    _createClass(WordsList, [{
+        key: 'render',
+        value: function render(props, state) {
+            var listItems = Object.keys(props.words).sort(function (a, b) {
+                return b - a;
+            }).map(function (id) {
+                var word = props.words[id];
+                return (0, _preact.h)(
+                    'li',
                     null,
-                    '#',
-                    word.id
-                ),
-                ' ',
-                word.text_en,
-                ': ',
-                word.text_ru,
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-                    'button',
-                    { onClick: props.handleDelete.bind(null, word.id) },
-                    '\xD7'
-                ),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-                    'button',
-                    { onClick: props.handleSetEditableWord.bind(null, word.id) },
-                    'e'
+                    (0, _preact.h)(
+                        'b',
+                        null,
+                        '#',
+                        word.id
+                    ),
+                    ' ',
+                    word.text_en,
+                    ': ',
+                    word.text_ru,
+                    (0, _preact.h)(
+                        'button',
+                        { onClick: props.handleDelete.bind(null, word.id) },
+                        '\xD7'
+                    ),
+                    (0, _preact.h)(
+                        'button',
+                        { onClick: props.handleSetEditableWord.bind(null, word.id) },
+                        'e'
+                    )
+                );
+            });
+            return (0, _preact.h)(
+                'div',
+                { 'class': 'words' },
+                (0, _preact.h)(
+                    'ul',
+                    null,
+                    listItems
                 )
             );
-        });
-        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-            'div',
-            { 'class': 'words' },
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-                'ul',
-                null,
-                listItems
-            )
-        );
+        }
+    }]);
+
+    return WordsList;
+}(_preact.Component);
+
+var WordForm = function (_Component2) {
+    _inherits(WordForm, _Component2);
+
+    function WordForm() {
+        _classCallCheck(this, WordForm);
+
+        return _possibleConstructorReturn(this, (WordForm.__proto__ || Object.getPrototypeOf(WordForm)).apply(this, arguments));
     }
-}
 
-class WordForm extends __WEBPACK_IMPORTED_MODULE_0_preact__["Component"] {
-    render(props) {
-        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-            'form',
-            { onSubmit: props.handleSubmit.bind(this), 'class': 'wordsApp-form' },
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])('input', { type: 'hidden', name: 'id', value: props.word.id || '' }),
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])('input', { type: 'text', name: 'text_en', value: props.word.text_en || '' }),
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])('input', { type: 'text', name: 'text_ru', value: props.word.text_ru || '' }),
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-                'button',
-                { type: 'submit' },
-                '->'
-            )
-        );
-    }
-}
+    _createClass(WordForm, [{
+        key: 'render',
+        value: function render(props) {
+            return (0, _preact.h)(
+                'form',
+                { onSubmit: props.handleSubmit.bind(this), 'class': 'wordsApp-form' },
+                (0, _preact.h)('input', { type: 'hidden', name: 'id', value: props.word.id || '' }),
+                (0, _preact.h)('input', { type: 'text', name: 'text_en', value: props.word.text_en || '' }),
+                (0, _preact.h)('input', { type: 'text', name: 'text_ru', value: props.word.text_ru || '' }),
+                (0, _preact.h)(
+                    'button',
+                    { type: 'submit' },
+                    '->'
+                )
+            );
+        }
+    }]);
 
-class App extends __WEBPACK_IMPORTED_MODULE_0_preact__["Component"] {
-    constructor() {
-        super();
+    return WordForm;
+}(_preact.Component);
 
-        this.state = {
+var App = function (_Component3) {
+    _inherits(App, _Component3);
+
+    function App() {
+        _classCallCheck(this, App);
+
+        var _this3 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+        _this3.state = {
             editMode: false,
             editableWord: {},
             words: []
         };
+        return _this3;
     }
 
-    componentWillMount() {
-        store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__actions__["a" /* addWord */])('incredible', 'невероятный'));
-        store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__actions__["a" /* addWord */])('1incredible', 'невероятный'));
-        this.setState(store.getState());
-        console.log(this.state);
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        let id = +event.target.elements.id.value;
-        let text_en = event.target.elements.text_en.value;
-        let text_ru = event.target.elements.text_ru.value;
-
-        if (!text_en || !text_ru) {
-            return;
+    _createClass(App, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            store.dispatch((0, _actions.addWord)('incredible', 'невероятный'));
+            store.dispatch((0, _actions.addWord)('1incredible', 'невероятный'));
+            this.setState(store.getState());
+            console.log(this.state);
         }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            event.preventDefault();
+            var id = +event.target.elements.id.value;
+            var text_en = event.target.elements.text_en.value;
+            var text_ru = event.target.elements.text_ru.value;
 
-        if (id) {
-            store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__actions__["b" /* editWord */])(id, text_en, text_ru));
-            store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__actions__["c" /* unsetEditableWord */])());
-        } else {
-            store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__actions__["a" /* addWord */])(text_en, text_ru));
+            if (!text_en || !text_ru) {
+                return;
+            }
+
+            if (id) {
+                store.dispatch((0, _actions.editWord)(id, text_en, text_ru));
+                store.dispatch((0, _actions.unsetEditableWord)());
+            } else {
+                store.dispatch((0, _actions.addWord)(text_en, text_ru));
+            }
+
+            this.setState(store.getState());
+
+            event.target.reset();
         }
+    }, {
+        key: 'handleSetEditableWord',
+        value: function handleSetEditableWord(id) {
+            var word = this.state.words[id];
 
-        this.setState(store.getState());
-
-        event.target.reset();
-    }
-
-    handleSetEditableWord(id) {
-        let word = this.state.words[id];
-
-        if (word) {
-            store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__actions__["d" /* setEditableWord */])(word.id, word.text_en, word.text_ru));
+            if (word) {
+                store.dispatch((0, _actions.setEditableWord)(word.id, word.text_en, word.text_ru));
+                this.setState(store.getState());
+            }
+        }
+    }, {
+        key: 'handleDelete',
+        value: function handleDelete(id) {
+            store.dispatch((0, _actions.deleteWord)(id));
             this.setState(store.getState());
         }
-    }
+    }, {
+        key: 'render',
+        value: function render(_ref, _ref2) {
+            var words = _ref2.words,
+                editableWord = _ref2.editableWord;
 
-    handleDelete(id) {
-        store.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__actions__["e" /* deleteWord */])(id));
-        this.setState(store.getState());
-    }
+            _objectDestructuringEmpty(_ref);
 
-    render({}, { words, editableWord }) {
-        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-            'div',
-            { id: 'wordsApp' },
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(
-                'h3',
-                null,
-                'Words'
-            ),
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(WordForm, {
-                handleSubmit: this.handleSubmit.bind(this),
-                word: editableWord
-            }),
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(WordsList, {
-                words: words,
-                handleDelete: this.handleDelete.bind(this),
-                handleSetEditableWord: this.handleSetEditableWord.bind(this)
-            })
-        );
-    }
-}
+            return (0, _preact.h)(
+                'div',
+                { id: 'wordsApp' },
+                (0, _preact.h)(
+                    'h3',
+                    null,
+                    'Words'
+                ),
+                (0, _preact.h)(WordForm, {
+                    handleSubmit: this.handleSubmit.bind(this),
+                    word: editableWord
+                }),
+                (0, _preact.h)(WordsList, {
+                    words: words,
+                    handleDelete: this.handleDelete.bind(this),
+                    handleSetEditableWord: this.handleSetEditableWord.bind(this)
+                })
+            );
+        }
+    }]);
 
-__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["render"])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_preact__["h"])(App, null), document.body);
+    return App;
+}(_preact.Component);
+
+(0, _preact.render)((0, _preact.h)(App, null), document.body);
 
 /*
 import { Board, Team } from './board';
@@ -1539,13 +1612,13 @@ start.subscribe(() => console.log('Sub 5'));
 start.next();*/
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(17);
 
 
 
@@ -1577,7 +1650,7 @@ function baseGetTag(value) {
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1589,11 +1662,11 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(8)))
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(18);
 
 
 /** Built-in value references. */
@@ -1603,7 +1676,7 @@ var getPrototype = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__overArg_js
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1657,7 +1730,7 @@ function getRawTag(value) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1686,7 +1759,7 @@ function objectToString(value) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1708,11 +1781,11 @@ function overArg(func, transform) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(14);
 
 
 /** Detect free variable `self`. */
@@ -1725,7 +1798,7 @@ var root = __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__["a" /* default */] || fr
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1761,12 +1834,12 @@ function isObjectLike(value) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compose__ = __webpack_require__(5);
-/* unused harmony export default */
+/* harmony export (immutable) */ __webpack_exports__["a"] = applyMiddleware;
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -1817,11 +1890,11 @@ function applyMiddleware() {
 }
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export default */
+/* harmony export (immutable) */ __webpack_exports__["a"] = bindActionCreators;
 function bindActionCreator(actionCreator, dispatch) {
   return function () {
     return dispatch(actionCreator.apply(undefined, arguments));
@@ -1871,7 +1944,7 @@ function bindActionCreators(actionCreators, dispatch) {
 }
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2011,14 +2084,14 @@ function combineReducers(reducers) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(24);
+module.exports = __webpack_require__(25);
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2028,7 +2101,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ponyfill = __webpack_require__(25);
+var _ponyfill = __webpack_require__(26);
 
 var _ponyfill2 = _interopRequireDefault(_ponyfill);
 
@@ -2051,10 +2124,10 @@ if (typeof self !== 'undefined') {
 
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(26)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(27)(module)))
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2083,7 +2156,7 @@ function symbolObservablePonyfill(root) {
 };
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {

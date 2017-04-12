@@ -48,9 +48,7 @@ function editableWord (state = {}, action) {
     }
 }
 
-const wordsApp = combineReducers({
-    words,
-    editableWord
+export const wordsApp = combineReducers({
+    words: words,
+    editableWord: editableWord
 });
-
-export default wordsApp;

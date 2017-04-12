@@ -9,7 +9,7 @@ export const type = {
 };
     
 
-let nextWordId = 1;
+var nextWordId = 1;
 
 
 export const addWord = (text_en, text_ru) => ({
