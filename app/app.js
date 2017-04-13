@@ -2,7 +2,7 @@ import { h, render, Component } from 'preact';
 
 import { createStore } from 'redux';
 import { wordsApp } from './reducers';
-import { addWord, editWord, deleteWord, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
+import { fetchWords, addWord, editWord, deleteWord, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
 
 
 let store = createStore(wordsApp);
@@ -59,8 +59,8 @@ class App extends Component {
     }
 
     componentWillMount() {
-        store.dispatch(addWord('incredible', 'невероятный'));
-        store.dispatch(addWord('1incredible', 'невероятный'));
+        store.dispatch(fetchWords());
+        //store.dispatch(addWord('1incredible', 'невероятный'));
         this.setState(store.getState());
         console.log(this.state);
     }

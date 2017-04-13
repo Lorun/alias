@@ -3,6 +3,16 @@ import { type } from './actions';
 
 function words (state = {}, action) {
     switch (action.type) {
+        case type.FETCH_WORDS:
+            console.log(action);
+            return {
+                ...state,
+                [action.result.id]: {
+                    id: action.id,
+                    text_en: action.result.text_en,
+                    text_ru: action.result.text_ru
+                }
+            };
         case type.ADD_WORD:
             return {
                 ...state,

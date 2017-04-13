@@ -77,6 +77,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var type = exports.type = {
+    FETCH_WORDS: 'FETCH_WORDS',
     ADD_WORD: 'ADD_WORD',
     EDIT_WORD: 'EDIT_WORD',
     DELETE_WORD: 'DELETE_WORD',
@@ -87,6 +88,26 @@ var type = exports.type = {
 };
 
 var nextWordId = 1;
+
+var fetchWords = exports.fetchWords = function fetchWords() {
+    return {
+        type: type.FETCH_WORDS,
+        result: setTimeout(function () {
+            return {
+                1: {
+                    id: 1,
+                    text_en: 'incredible',
+                    text_ru: 'невероятный'
+                },
+                2: {
+                    id: 2,
+                    text_en: 'natural',
+                    text_ru: 'природа, природный'
+                }
+            };
+        }, 2000)
+    };
+};
 
 var addWord = exports.addWord = function addWord(text_en, text_ru) {
     return {
@@ -823,6 +844,13 @@ function words() {
     var action = arguments[1];
 
     switch (action.type) {
+        case _actions.type.FETCH_WORDS:
+            console.log(action);
+            return _extends({}, state, _defineProperty({}, action.result.id, {
+                id: action.id,
+                text_en: action.result.text_en,
+                text_ru: action.result.text_ru
+            }));
         case _actions.type.ADD_WORD:
             return _extends({}, state, _defineProperty({}, action.id, {
                 id: action.id,
@@ -1506,8 +1534,8 @@ var App = function (_Component3) {
     _createClass(App, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            store.dispatch((0, _actions.addWord)('incredible', 'невероятный'));
-            store.dispatch((0, _actions.addWord)('1incredible', 'невероятный'));
+            store.dispatch((0, _actions.fetchWords)());
+            //store.dispatch(addWord('1incredible', 'невероятный'));
             this.setState(store.getState());
             console.log(this.state);
         }
