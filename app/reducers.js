@@ -1,17 +1,16 @@
-import { combineReducers } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { type } from './actions';
 
 function words (state = {}, action) {
     switch (action.type) {
         case type.FETCH_WORDS:
-            console.log(action);
+            return {
+                ...state
+            };
+        case type.FETCH_WORDS_SUCCESS:
             return {
                 ...state,
-                [action.result.id]: {
-                    id: action.id,
-                    text_en: action.result.text_en,
-                    text_ru: action.result.text_ru
-                }
+                ...action.payload
             };
         case type.ADD_WORD:
             return {
@@ -67,8 +66,17 @@ function editMode(state = false, action) {
     }
 }
 
-export const wordsApp = combineReducers({
+const wordsApp = combineReducers({
     words,
     editableWord,
     editMode
 });
+
+export const store = createStore(wordsApp);
+
+export const dispatch = (action, component) => {
+    const result = store.dispatch(action);
+    component.setState(store.getState());
+
+    return result.payload || result;
+};

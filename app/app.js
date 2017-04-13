@@ -1,11 +1,7 @@
 import { h, render, Component } from 'preact';
 
-import { createStore } from 'redux';
-import { wordsApp } from './reducers';
-import { fetchWords, addWord, editWord, deleteWord, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
-
-
-let store = createStore(wordsApp);
+import { store, dispatch } from './reducers';
+import { fetchWords, fetchWordsSuccess, addWord, editWord, deleteWord, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
 
 
 class WordsList extends Component {
@@ -59,10 +55,13 @@ class App extends Component {
     }
 
     componentWillMount() {
-        store.dispatch(fetchWords());
-        //store.dispatch(addWord('1incredible', 'невероятный'));
-        this.setState(store.getState());
-        console.log(this.state);
+        dispatch(fetchWords(), this)
+            .then(response => {
+                return response.json();
+            })
+            .then(words => {
+                dispatch(fetchWordsSuccess(words), this);
+            });
     }
 
     handleSubmit(event) {
@@ -76,13 +75,11 @@ class App extends Component {
         }
 
         if (id) {
-            store.dispatch(editWord(id, text_en, text_ru));
-            store.dispatch(unsetEditableWord());
+            dispatch(editWord(id, text_en, text_ru), this);
+            dispatch(unsetEditableWord(), this);
         } else {
-            store.dispatch(addWord(text_en, text_ru));
+            dispatch(addWord(text_en, text_ru), this);
         }
-
-        this.setState(store.getState());
 
         event.target.reset();
     }
@@ -91,25 +88,21 @@ class App extends Component {
         let word = this.state.words[id];
 
         if (word) {
-            store.dispatch(setEditableWord(word.id, word.text_en, word.text_ru));
-            this.setState(store.getState());
+            dispatch(setEditableWord(word.id, word.text_en, word.text_ru), this);
         }
     }
 
     handleDelete(id) {
-        store.dispatch(deleteWord(id));
+        dispatch(deleteWord(id), this);
 
         if (id === this.state.editableWord.id) {
-            store.dispatch(unsetEditableWord());
+            dispatch(unsetEditableWord(), this);
         }
-
-        this.setState(store.getState());
     }
 
     toggleEditMode() {
-        store.dispatch(toggleEditMode());
-        store.dispatch(unsetEditableWord());
-        this.setState(store.getState());
+        dispatch(toggleEditMode(), this);
+        dispatch(unsetEditableWord(), this);
     }
 
     render({}, { words, editableWord }) {

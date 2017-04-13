@@ -1,6 +1,9 @@
+import 'whatwg-fetch';
+
 
 export const type = {
     FETCH_WORDS: 'FETCH_WORDS',
+    FETCH_WORDS_SUCCESS: 'FETCH_WORDS_SUCCESS',
     ADD_WORD: 'ADD_WORD',
     EDIT_WORD: 'EDIT_WORD',
     DELETE_WORD: 'DELETE_WORD',
@@ -13,23 +16,21 @@ export const type = {
 
 let nextWordId = 1;
 
-export const fetchWords = () => ({
-    type: type.FETCH_WORDS,
-    result: setTimeout(() => {
-        return {
-            1: {
-                id: 1,
-                text_en: 'incredible',
-                text_ru: 'невероятный'
-            },
-            2: {
-                id: 2,
-                text_en: 'natural',
-                text_ru: 'природа, природный'
-            }
-        }
-    }, 2000)
-});
+export const fetchWords = () => {
+    return {
+        type: type.FETCH_WORDS,
+        payload: fetch('http://1.lobarev.com/api/words')
+    }
+};
+
+export const fetchWordsSuccess = (words) => {
+    const max = Math.max( ...Object.keys(words) );
+    nextWordId = max + 1;
+    return {
+        type: type.FETCH_WORDS_SUCCESS,
+        payload: words
+    }
+};
 
 export const addWord = (text_en, text_ru) => ({
     type: type.ADD_WORD,
