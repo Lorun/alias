@@ -5,16 +5,17 @@ export const type = {
     FETCH_WORDS: 'FETCH_WORDS',
     FETCH_WORDS_SUCCESS: 'FETCH_WORDS_SUCCESS',
     ADD_WORD: 'ADD_WORD',
+    ADD_WORD_SUCCESS: 'ADD_WORD_SUCCESS',
     EDIT_WORD: 'EDIT_WORD',
+    EDIT_WORD_SUCCESS: 'EDIT_WORD_SUCCESS',
     DELETE_WORD: 'DELETE_WORD',
+    DELETE_WORD_SUCCESS: 'DELETE_WORD_SUCCESS',
 
     SET_EDITABLE_WORD: 'SET_EDITABLE_WORD',
     UNSET_EDITABLE_WORD: 'UNSET_EDITABLE_WORD',
     TOGGLE_EDIT_MODE: 'TOGGLE_EDIT_MODE'
 };
     
-
-let nextWordId = 1;
 
 export const fetchWords = () => {
     return {
@@ -24,8 +25,6 @@ export const fetchWords = () => {
 };
 
 export const fetchWordsSuccess = (words) => {
-    const max = Math.max( ...Object.keys(words) );
-    nextWordId = max + 1;
     return {
         type: type.FETCH_WORDS_SUCCESS,
         payload: words
@@ -34,20 +33,57 @@ export const fetchWordsSuccess = (words) => {
 
 export const addWord = (text_en, text_ru) => ({
     type: type.ADD_WORD,
-    id: nextWordId++,
-    text_en,
-    text_ru
+    payload: fetch('http://1.lobarev.com/api/words', {
+        method: 'post',
+        body: JSON.stringify({
+            text_en,
+            text_ru
+        }),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        }
+    })
+});
+
+export const addWordSuccess = (word) => ({
+    type: type.ADD_WORD_SUCCESS,
+    id: word.id,
+    text_en: word.text_en,
+    text_ru: word.text_ru
 });
 
 export const editWord = (id, text_en, text_ru) => ({
     type: type.EDIT_WORD,
+    payload: fetch('http://1.lobarev.com/api/words/' + id, {
+        method: 'PUT',
+        body: JSON.stringify({
+            text_en,
+            text_ru
+        }),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        }
+    })
+});
+
+export const editWordSuccess = (id, text_en, text_ru) => ({
+    type: type.EDIT_WORD_SUCCESS,
     id,
     text_en,
     text_ru
 });
 
-export const deleteWord = id => ({
+export const deleteWord = (id) => ({
     type: type.DELETE_WORD,
+    payload: fetch('http://1.lobarev.com/api/words/' + id, {
+        method: 'DELETE'
+    })
+});
+
+export const deleteWordSuccess = id => ({
+    type: type.DELETE_WORD_SUCCESS,
     id
 });
 

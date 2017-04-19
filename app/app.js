@@ -1,7 +1,7 @@
 import { h, render, Component } from 'preact';
 
 import { store, dispatch } from './reducers';
-import { fetchWords, fetchWordsSuccess, addWord, editWord, deleteWord, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
+import { fetchWords, fetchWordsSuccess, addWord, addWordSuccess, editWord, editWordSuccess, deleteWord, deleteWordSuccess, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
 
 
 class WordsList extends Component {
@@ -54,7 +54,7 @@ class App extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         dispatch(fetchWords(), this)
             .then(response => {
                 return response.json();
@@ -75,10 +75,22 @@ class App extends Component {
         }
 
         if (id) {
-            dispatch(editWord(id, text_en, text_ru), this);
-            dispatch(unsetEditableWord(), this);
+            dispatch(editWord(id, text_en, text_ru), this)
+                .then(response => {
+                    return response.json();
+                })
+                .then(result => {
+                    dispatch(editWordSuccess(id, text_en, text_ru), this);
+                    dispatch(unsetEditableWord(), this);
+                });
         } else {
-            dispatch(addWord(text_en, text_ru), this);
+            dispatch(addWord(text_en, text_ru), this)
+                .then(response => {
+                    return response.json();
+                })
+                .then(result => {
+                    dispatch(addWordSuccess(result.word), this);
+                });
         }
 
         event.target.reset();
@@ -93,7 +105,14 @@ class App extends Component {
     }
 
     handleDelete(id) {
-        dispatch(deleteWord(id), this);
+        dispatch(deleteWord(id), this)
+            .then(response => {
+                return response.json();
+            })
+            .then(result => {
+                console.log(result);
+                dispatch(deleteWordSuccess(id), this);
+            });
 
         if (id === this.state.editableWord.id) {
             dispatch(unsetEditableWord(), this);

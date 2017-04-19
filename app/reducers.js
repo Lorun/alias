@@ -4,15 +4,15 @@ import { type } from './actions';
 function words (state = {}, action) {
     switch (action.type) {
         case type.FETCH_WORDS:
-            return {
-                ...state
-            };
+            return state;
         case type.FETCH_WORDS_SUCCESS:
             return {
                 ...state,
                 ...action.payload
             };
         case type.ADD_WORD:
+            return state;
+        case type.ADD_WORD_SUCCESS:
             return {
                 ...state,
                 [action.id]: {
@@ -22,6 +22,8 @@ function words (state = {}, action) {
                 }
             };
         case type.EDIT_WORD:
+            return state;
+        case type.EDIT_WORD_SUCCESS:
             if (!state[action.id]) {
                 return state;
             }
@@ -34,6 +36,8 @@ function words (state = {}, action) {
                 }
             };
         case type.DELETE_WORD:
+            return state;
+        case type.DELETE_WORD_SUCCESS:
             const nextState = { ...state };
             delete nextState[action.id];
             return nextState;

@@ -76,25 +76,24 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.toggleEditMode = exports.unsetEditableWord = exports.setEditableWord = exports.deleteWord = exports.editWord = exports.addWord = exports.fetchWordsSuccess = exports.fetchWords = exports.type = undefined;
+exports.toggleEditMode = exports.unsetEditableWord = exports.setEditableWord = exports.deleteWordSuccess = exports.deleteWord = exports.editWordSuccess = exports.editWord = exports.addWordSuccess = exports.addWord = exports.fetchWordsSuccess = exports.fetchWords = exports.type = undefined;
 
 __webpack_require__(27);
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var type = exports.type = {
     FETCH_WORDS: 'FETCH_WORDS',
     FETCH_WORDS_SUCCESS: 'FETCH_WORDS_SUCCESS',
     ADD_WORD: 'ADD_WORD',
+    ADD_WORD_SUCCESS: 'ADD_WORD_SUCCESS',
     EDIT_WORD: 'EDIT_WORD',
+    EDIT_WORD_SUCCESS: 'EDIT_WORD_SUCCESS',
     DELETE_WORD: 'DELETE_WORD',
+    DELETE_WORD_SUCCESS: 'DELETE_WORD_SUCCESS',
 
     SET_EDITABLE_WORD: 'SET_EDITABLE_WORD',
     UNSET_EDITABLE_WORD: 'UNSET_EDITABLE_WORD',
     TOGGLE_EDIT_MODE: 'TOGGLE_EDIT_MODE'
 };
-
-var nextWordId = 1;
 
 var fetchWords = exports.fetchWords = function fetchWords() {
     return {
@@ -104,8 +103,6 @@ var fetchWords = exports.fetchWords = function fetchWords() {
 };
 
 var fetchWordsSuccess = exports.fetchWordsSuccess = function fetchWordsSuccess(words) {
-    var max = Math.max.apply(Math, _toConsumableArray(Object.keys(words)));
-    nextWordId = max + 1;
     return {
         type: type.FETCH_WORDS_SUCCESS,
         payload: words
@@ -115,15 +112,49 @@ var fetchWordsSuccess = exports.fetchWordsSuccess = function fetchWordsSuccess(w
 var addWord = exports.addWord = function addWord(text_en, text_ru) {
     return {
         type: type.ADD_WORD,
-        id: nextWordId++,
-        text_en: text_en,
-        text_ru: text_ru
+        payload: fetch('http://1.lobarev.com/api/words', {
+            method: 'post',
+            body: JSON.stringify({
+                text_en: text_en,
+                text_ru: text_ru
+            }),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            }
+        })
+    };
+};
+
+var addWordSuccess = exports.addWordSuccess = function addWordSuccess(word) {
+    return {
+        type: type.ADD_WORD_SUCCESS,
+        id: word.id,
+        text_en: word.text_en,
+        text_ru: word.text_ru
     };
 };
 
 var editWord = exports.editWord = function editWord(id, text_en, text_ru) {
     return {
         type: type.EDIT_WORD,
+        payload: fetch('http://1.lobarev.com/api/words/' + id, {
+            method: 'PUT',
+            body: JSON.stringify({
+                text_en: text_en,
+                text_ru: text_ru
+            }),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            }
+        })
+    };
+};
+
+var editWordSuccess = exports.editWordSuccess = function editWordSuccess(id, text_en, text_ru) {
+    return {
+        type: type.EDIT_WORD_SUCCESS,
         id: id,
         text_en: text_en,
         text_ru: text_ru
@@ -133,6 +164,15 @@ var editWord = exports.editWord = function editWord(id, text_en, text_ru) {
 var deleteWord = exports.deleteWord = function deleteWord(id) {
     return {
         type: type.DELETE_WORD,
+        payload: fetch('http://1.lobarev.com/api/words/' + id, {
+            method: 'DELETE'
+        })
+    };
+};
+
+var deleteWordSuccess = exports.deleteWordSuccess = function deleteWordSuccess(id) {
+    return {
+        type: type.DELETE_WORD_SUCCESS,
         id: id
     };
 };
@@ -811,16 +851,20 @@ function words() {
 
     switch (action.type) {
         case _actions.type.FETCH_WORDS:
-            return _extends({}, state);
+            return state;
         case _actions.type.FETCH_WORDS_SUCCESS:
             return _extends({}, state, action.payload);
         case _actions.type.ADD_WORD:
+            return state;
+        case _actions.type.ADD_WORD_SUCCESS:
             return _extends({}, state, _defineProperty({}, action.id, {
                 id: action.id,
                 text_en: action.text_en,
                 text_ru: action.text_ru
             }));
         case _actions.type.EDIT_WORD:
+            return state;
+        case _actions.type.EDIT_WORD_SUCCESS:
             if (!state[action.id]) {
                 return state;
             }
@@ -829,6 +873,8 @@ function words() {
                 text_ru: action.text_ru
             })));
         case _actions.type.DELETE_WORD:
+            return state;
+        case _actions.type.DELETE_WORD_SUCCESS:
             var nextState = _extends({}, state);
             delete nextState[action.id];
             return nextState;
@@ -1500,8 +1546,8 @@ var App = function (_Component3) {
     }
 
     _createClass(App, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
             var _this4 = this;
 
             (0, _reducers.dispatch)((0, _actions.fetchWords)(), this).then(function (response) {
@@ -1513,6 +1559,8 @@ var App = function (_Component3) {
     }, {
         key: 'handleSubmit',
         value: function handleSubmit(event) {
+            var _this5 = this;
+
             event.preventDefault();
             var id = +event.target.elements.id.value;
             var text_en = event.target.elements.text_en.value;
@@ -1523,10 +1571,18 @@ var App = function (_Component3) {
             }
 
             if (id) {
-                (0, _reducers.dispatch)((0, _actions.editWord)(id, text_en, text_ru), this);
-                (0, _reducers.dispatch)((0, _actions.unsetEditableWord)(), this);
+                (0, _reducers.dispatch)((0, _actions.editWord)(id, text_en, text_ru), this).then(function (response) {
+                    return response.json();
+                }).then(function (result) {
+                    (0, _reducers.dispatch)((0, _actions.editWordSuccess)(id, text_en, text_ru), _this5);
+                    (0, _reducers.dispatch)((0, _actions.unsetEditableWord)(), _this5);
+                });
             } else {
-                (0, _reducers.dispatch)((0, _actions.addWord)(text_en, text_ru), this);
+                (0, _reducers.dispatch)((0, _actions.addWord)(text_en, text_ru), this).then(function (response) {
+                    return response.json();
+                }).then(function (result) {
+                    (0, _reducers.dispatch)((0, _actions.addWordSuccess)(result.word), _this5);
+                });
             }
 
             event.target.reset();
@@ -1543,7 +1599,14 @@ var App = function (_Component3) {
     }, {
         key: 'handleDelete',
         value: function handleDelete(id) {
-            (0, _reducers.dispatch)((0, _actions.deleteWord)(id), this);
+            var _this6 = this;
+
+            (0, _reducers.dispatch)((0, _actions.deleteWord)(id), this).then(function (response) {
+                return response.json();
+            }).then(function (result) {
+                console.log(result);
+                (0, _reducers.dispatch)((0, _actions.deleteWordSuccess)(id), _this6);
+            });
 
             if (id === this.state.editableWord.id) {
                 (0, _reducers.dispatch)((0, _actions.unsetEditableWord)(), this);
