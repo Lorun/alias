@@ -80,6 +80,8 @@ exports.toggleEditMode = exports.unsetEditableWord = exports.setEditableWord = e
 
 __webpack_require__(27);
 
+var api_url = 'http://1.lobarev.com/api/';
+
 var type = exports.type = {
     FETCH_WORDS: 'FETCH_WORDS',
     FETCH_WORDS_SUCCESS: 'FETCH_WORDS_SUCCESS',
@@ -98,7 +100,7 @@ var type = exports.type = {
 var fetchWords = exports.fetchWords = function fetchWords() {
     return {
         type: type.FETCH_WORDS,
-        payload: fetch('http://1.lobarev.com/api/words')
+        payload: fetch(api_url + 'words')
     };
 };
 
@@ -112,7 +114,7 @@ var fetchWordsSuccess = exports.fetchWordsSuccess = function fetchWordsSuccess(w
 var addWord = exports.addWord = function addWord(text_en, text_ru) {
     return {
         type: type.ADD_WORD,
-        payload: fetch('http://1.lobarev.com/api/words', {
+        payload: fetch(api_url + 'words', {
             method: 'post',
             body: JSON.stringify({
                 text_en: text_en,
@@ -138,7 +140,7 @@ var addWordSuccess = exports.addWordSuccess = function addWordSuccess(word) {
 var editWord = exports.editWord = function editWord(id, text_en, text_ru) {
     return {
         type: type.EDIT_WORD,
-        payload: fetch('http://1.lobarev.com/api/words/' + id, {
+        payload: fetch(api_url + 'words/' + id, {
             method: 'PUT',
             body: JSON.stringify({
                 text_en: text_en,
@@ -164,7 +166,7 @@ var editWordSuccess = exports.editWordSuccess = function editWordSuccess(id, tex
 var deleteWord = exports.deleteWord = function deleteWord(id) {
     return {
         type: type.DELETE_WORD,
-        payload: fetch('http://1.lobarev.com/api/words/' + id, {
+        payload: fetch(api_url + 'words/' + id, {
             method: 'DELETE'
         })
     };

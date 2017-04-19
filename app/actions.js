@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
 
+const api_url = 'http://1.lobarev.com/api/';
 
 export const type = {
     FETCH_WORDS: 'FETCH_WORDS',
@@ -20,7 +21,7 @@ export const type = {
 export const fetchWords = () => {
     return {
         type: type.FETCH_WORDS,
-        payload: fetch('http://1.lobarev.com/api/words')
+        payload: fetch(api_url + 'words')
     }
 };
 
@@ -33,7 +34,7 @@ export const fetchWordsSuccess = (words) => {
 
 export const addWord = (text_en, text_ru) => ({
     type: type.ADD_WORD,
-    payload: fetch('http://1.lobarev.com/api/words', {
+    payload: fetch(api_url + 'words', {
         method: 'post',
         body: JSON.stringify({
             text_en,
@@ -55,7 +56,7 @@ export const addWordSuccess = (word) => ({
 
 export const editWord = (id, text_en, text_ru) => ({
     type: type.EDIT_WORD,
-    payload: fetch('http://1.lobarev.com/api/words/' + id, {
+    payload: fetch(api_url + 'words/' + id, {
         method: 'PUT',
         body: JSON.stringify({
             text_en,
@@ -77,7 +78,7 @@ export const editWordSuccess = (id, text_en, text_ru) => ({
 
 export const deleteWord = (id) => ({
     type: type.DELETE_WORD,
-    payload: fetch('http://1.lobarev.com/api/words/' + id, {
+    payload: fetch(api_url + 'words/' + id, {
         method: 'DELETE'
     })
 });
