@@ -140,6 +140,9 @@ var addWordSuccess = exports.addWordSuccess = function addWordSuccess(word) {
 var editWord = exports.editWord = function editWord(id, text_en, text_ru) {
     return {
         type: type.EDIT_WORD,
+        id: id,
+        text_en: text_en,
+        text_ru: text_ru,
         payload: fetch(api_url + 'words/' + id, {
             method: 'PUT',
             body: JSON.stringify({
@@ -154,12 +157,10 @@ var editWord = exports.editWord = function editWord(id, text_en, text_ru) {
     };
 };
 
-var editWordSuccess = exports.editWordSuccess = function editWordSuccess(id, text_en, text_ru) {
+var editWordSuccess = exports.editWordSuccess = function editWordSuccess(id) {
     return {
         type: type.EDIT_WORD_SUCCESS,
-        id: id,
-        text_en: text_en,
-        text_ru: text_ru
+        id: id
     };
 };
 
@@ -848,37 +849,66 @@ var _actions = __webpack_require__(0);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function words() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        isFetching: false,
+        isDeleting: false,
+        items: {}
+    };
     var action = arguments[1];
+
+
+    var nextState = void 0;
 
     switch (action.type) {
         case _actions.type.FETCH_WORDS:
-            return state;
+            return _extends({}, state, {
+                isFetching: true
+            });
         case _actions.type.FETCH_WORDS_SUCCESS:
-            return _extends({}, state, action.payload);
+            return _extends({}, state, {
+                isFetching: false,
+                items: _extends({}, action.payload)
+            });
         case _actions.type.ADD_WORD:
-            return state;
+            return _extends({}, state, {
+                isFetching: true
+            });
         case _actions.type.ADD_WORD_SUCCESS:
-            return _extends({}, state, _defineProperty({}, action.id, {
-                id: action.id,
-                text_en: action.text_en,
-                text_ru: action.text_ru
-            }));
+            return _extends({}, state, {
+                isFetching: false,
+                items: _extends({}, state.items, _defineProperty({}, action.id, {
+                    id: action.id,
+                    text_en: action.text_en,
+                    text_ru: action.text_ru
+                }))
+            });
         case _actions.type.EDIT_WORD:
-            return state;
+            return _extends({}, state, {
+                isFetching: true,
+                items: _extends({}, state.items, _defineProperty({}, action.id, _extends({}, state.items[action.id], {
+                    text_en: action.text_en,
+                    text_ru: action.text_ru
+                })))
+            });
         case _actions.type.EDIT_WORD_SUCCESS:
-            if (!state[action.id]) {
+            if (!state.items[action.id]) {
                 return state;
             }
-            return _extends({}, state, _defineProperty({}, action.id, _extends({}, state[action.id], {
-                text_en: action.text_en,
-                text_ru: action.text_ru
-            })));
+            return _extends({}, state, {
+                isFetching: false
+            });
         case _actions.type.DELETE_WORD:
-            return state;
+            /*Object.assign({}, state, {
+                isDeleting: true
+            });*/
+            return _extends({}, state, {
+                isDeleting: true
+            });
         case _actions.type.DELETE_WORD_SUCCESS:
-            var nextState = _extends({}, state);
-            delete nextState[action.id];
+            nextState = _extends({}, state, {
+                isDeleting: false
+            });
+            delete nextState.items[action.id];
             return nextState;
         default:
             return state;
@@ -1456,10 +1486,10 @@ var WordsList = function (_Component) {
     _createClass(WordsList, [{
         key: 'render',
         value: function render(props, state) {
-            var listItems = Object.keys(props.words).sort(function (a, b) {
+            var listItems = Object.keys(props.words.items).sort(function (a, b) {
                 return b - a;
             }).map(function (id) {
-                var word = props.words[id];
+                var word = props.words.items[id];
                 var className = 'wordsList-item' + (props.editableWord.id && props.editableWord.id === +id ? ' is-editable' : '');
                 return (0, _preact.h)(
                     'li',
@@ -1476,13 +1506,13 @@ var WordsList = function (_Component) {
                     word.text_ru,
                     (0, _preact.h)(
                         'button',
-                        { onClick: props.handleDelete.bind(null, word.id), className: 'wordsList-handle' },
-                        '\xD7'
+                        { onClick: props.handleSetEditableWord.bind(null, word.id), className: 'wordsList-handle' },
+                        'edit'
                     ),
                     (0, _preact.h)(
                         'button',
-                        { onClick: props.handleSetEditableWord.bind(null, word.id), className: 'wordsList-handle' },
-                        'e'
+                        { onClick: props.handleDelete.bind(null, word.id), className: 'wordsList-handle' },
+                        '\xD7'
                     )
                 );
             });
@@ -1493,7 +1523,12 @@ var WordsList = function (_Component) {
                     'ul',
                     null,
                     listItems
-                )
+                ),
+                props.words.isFetching ? (0, _preact.h)(
+                    'div',
+                    { className: 'wordsList-loading' },
+                    'Loading...'
+                ) : ''
             );
         }
     }]);
@@ -1517,8 +1552,8 @@ var WordForm = function (_Component2) {
                 'form',
                 { onSubmit: props.handleSubmit.bind(this), 'class': 'wordsApp-form' },
                 (0, _preact.h)('input', { type: 'hidden', name: 'id', value: props.word.id || '' }),
-                (0, _preact.h)('input', { type: 'text', name: 'text_en', value: props.word.text_en || '' }),
-                (0, _preact.h)('input', { type: 'text', name: 'text_ru', value: props.word.text_ru || '' }),
+                (0, _preact.h)('input', { type: 'text', name: 'text_en', value: props.word.text_en || '', maxlength: '50' }),
+                (0, _preact.h)('input', { type: 'text', name: 'text_ru', value: props.word.text_ru || '', maxlength: '50' }),
                 (0, _preact.h)(
                     'button',
                     { type: 'submit' },
@@ -1542,7 +1577,11 @@ var App = function (_Component3) {
         _this3.state = {
             editMode: false,
             editableWord: {},
-            words: []
+            words: {
+                isFetching: false,
+                isDeleting: false,
+                items: {}
+            }
         };
         return _this3;
     }
@@ -1564,6 +1603,10 @@ var App = function (_Component3) {
             var _this5 = this;
 
             event.preventDefault();
+            if (this.state.words.isFetching) {
+                return;
+            }
+
             var id = +event.target.elements.id.value;
             var text_en = event.target.elements.text_en.value;
             var text_ru = event.target.elements.text_ru.value;
@@ -1576,7 +1619,7 @@ var App = function (_Component3) {
                 (0, _reducers.dispatch)((0, _actions.editWord)(id, text_en, text_ru), this).then(function (response) {
                     return response.json();
                 }).then(function (result) {
-                    (0, _reducers.dispatch)((0, _actions.editWordSuccess)(id, text_en, text_ru), _this5);
+                    (0, _reducers.dispatch)((0, _actions.editWordSuccess)(id), _this5);
                     (0, _reducers.dispatch)((0, _actions.unsetEditableWord)(), _this5);
                 });
             } else {
@@ -1592,7 +1635,11 @@ var App = function (_Component3) {
     }, {
         key: 'handleSetEditableWord',
         value: function handleSetEditableWord(id) {
-            var word = this.state.words[id];
+            if (this.state.words.isFetching) {
+                return;
+            }
+
+            var word = this.state.words.items[id];
 
             if (word) {
                 (0, _reducers.dispatch)((0, _actions.setEditableWord)(word.id, word.text_en, word.text_ru), this);
@@ -1603,10 +1650,13 @@ var App = function (_Component3) {
         value: function handleDelete(id) {
             var _this6 = this;
 
+            if (this.state.words.isDeleting) {
+                return;
+            }
+
             (0, _reducers.dispatch)((0, _actions.deleteWord)(id), this).then(function (response) {
                 return response.json();
             }).then(function (result) {
-                console.log(result);
                 (0, _reducers.dispatch)((0, _actions.deleteWordSuccess)(id), _this6);
             });
 

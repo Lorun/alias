@@ -56,6 +56,9 @@ export const addWordSuccess = (word) => ({
 
 export const editWord = (id, text_en, text_ru) => ({
     type: type.EDIT_WORD,
+    id,
+    text_en,
+    text_ru,
     payload: fetch(api_url + 'words/' + id, {
         method: 'PUT',
         body: JSON.stringify({
@@ -69,11 +72,9 @@ export const editWord = (id, text_en, text_ru) => ({
     })
 });
 
-export const editWordSuccess = (id, text_en, text_ru) => ({
+export const editWordSuccess = (id) => ({
     type: type.EDIT_WORD_SUCCESS,
-    id,
-    text_en,
-    text_ru
+    id
 });
 
 export const deleteWord = (id) => ({

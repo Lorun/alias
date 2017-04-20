@@ -1,45 +1,83 @@
 import { createStore, combineReducers } from 'redux';
 import { type } from './actions';
 
-function words (state = {}, action) {
+function words (
+    state = {
+        isFetching: false,
+        isDeleting: false,
+        items: {}
+    },
+    action) {
+
+    let nextState;
+
     switch (action.type) {
         case type.FETCH_WORDS:
-            return state;
+            return {
+                ...state,
+                isFetching: true
+            };
         case type.FETCH_WORDS_SUCCESS:
             return {
                 ...state,
-                ...action.payload
+                isFetching: false,
+                items: {
+                    ...action.payload
+                }
             };
         case type.ADD_WORD:
-            return state;
+            return {
+                ...state,
+                isFetching: true
+            };
         case type.ADD_WORD_SUCCESS:
             return {
                 ...state,
-                [action.id]: {
-                    id: action.id,
-                    text_en: action.text_en,
-                    text_ru: action.text_ru
+                isFetching: false,
+                items: {
+                    ...state.items,
+                    [action.id]: {
+                        id: action.id,
+                        text_en: action.text_en,
+                        text_ru: action.text_ru
+                    }
                 }
             };
         case type.EDIT_WORD:
-            return state;
+            return {
+                ...state,
+                isFetching: true,
+                items: {
+                    ...state.items,
+                    [action.id]: {
+                        ...state.items[action.id],
+                        text_en: action.text_en,
+                        text_ru: action.text_ru
+                    }
+                }
+            };
         case type.EDIT_WORD_SUCCESS:
-            if (!state[action.id]) {
+            if (!state.items[action.id]) {
                 return state;
             }
             return {
                 ...state,
-                [action.id]: {
-                    ...state[action.id],
-                    text_en: action.text_en,
-                    text_ru: action.text_ru
-                }
+                isFetching: false
             };
         case type.DELETE_WORD:
-            return state;
+            /*Object.assign({}, state, {
+                isDeleting: true
+            });*/
+            return {
+                ...state,
+                isDeleting: true
+            };
         case type.DELETE_WORD_SUCCESS:
-            const nextState = { ...state };
-            delete nextState[action.id];
+            nextState = {
+                ...state,
+                isDeleting: false
+            };
+            delete nextState.items[action.id];
             return nextState;
         default:
             return state;

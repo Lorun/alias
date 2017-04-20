@@ -7,14 +7,14 @@ import { fetchWords, fetchWordsSuccess, addWord, addWordSuccess, editWord, editW
 class WordsList extends Component {
 
     render(props, state) {
-        let listItems = Object.keys(props.words).sort((a, b) => b - a).map((id) => {
-            let word = props.words[id];
+        let listItems = Object.keys(props.words.items).sort((a, b) => b - a).map((id) => {
+            let word = props.words.items[id];
             let className = 'wordsList-item' + (props.editableWord.id && props.editableWord.id === +id ? ' is-editable' : '');
             return (
                 <li className={className}>
                     <b>#{word.id}</b> {word.text_en}: {word.text_ru}
+                    <button onClick={ props.handleSetEditableWord.bind(null, word.id) } className="wordsList-handle">edit</button>
                     <button onClick={ props.handleDelete.bind(null, word.id) } className="wordsList-handle">×</button>
-                    <button onClick={ props.handleSetEditableWord.bind(null, word.id) } className="wordsList-handle">e</button>
                 </li>
             );
         });
@@ -23,6 +23,7 @@ class WordsList extends Component {
                 <ul>
                     {listItems}
                 </ul>
+                { props.words.isFetching ? <div className="wordsList-loading" >Loading...</div> : '' }
             </div>
         );
     }
@@ -34,8 +35,8 @@ class WordForm extends Component {
         return(
             <form onSubmit={ props.handleSubmit.bind(this) } class="wordsApp-form">
                 <input type="hidden" name="id" value={ props.word.id || '' } />
-                <input type="text" name="text_en" value={ props.word.text_en || '' } />
-                <input type="text" name="text_ru" value={ props.word.text_ru || '' } />
+                <input type="text" name="text_en" value={ props.word.text_en || '' } maxlength="50" />
+                <input type="text" name="text_ru" value={ props.word.text_ru || '' } maxlength="50" />
                 <button type="submit">-></button>
             </form>
         );
@@ -50,7 +51,11 @@ class App extends Component {
         this.state = {
             editMode: false,
             editableWord: {},
-            words: []
+            words: {
+                isFetching: false,
+                isDeleting: false,
+                items: {}
+            }
         };
     }
 
@@ -66,6 +71,10 @@ class App extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        if (this.state.words.isFetching) {
+            return;
+        }
+
         let id = +event.target.elements.id.value;
         let text_en = event.target.elements.text_en.value;
         let text_ru = event.target.elements.text_ru.value;
@@ -80,7 +89,7 @@ class App extends Component {
                     return response.json();
                 })
                 .then(result => {
-                    dispatch(editWordSuccess(id, text_en, text_ru), this);
+                    dispatch(editWordSuccess(id), this);
                     dispatch(unsetEditableWord(), this);
                 });
         } else {
@@ -97,7 +106,11 @@ class App extends Component {
     }
 
     handleSetEditableWord(id) {
-        let word = this.state.words[id];
+        if (this.state.words.isFetching) {
+            return;
+        }
+
+        let word = this.state.words.items[id];
 
         if (word) {
             dispatch(setEditableWord(word.id, word.text_en, word.text_ru), this);
@@ -105,12 +118,15 @@ class App extends Component {
     }
 
     handleDelete(id) {
+        if (this.state.words.isDeleting) {
+            return;
+        }
+
         dispatch(deleteWord(id), this)
             .then(response => {
                 return response.json();
             })
             .then(result => {
-                console.log(result);
                 dispatch(deleteWordSuccess(id), this);
             });
 
