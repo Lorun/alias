@@ -3,8 +3,10 @@ const webpack = require('webpack');
 const path = require('path');
 
 function buildConfig (env) {
-    var config = {
-        entry: './app/app.js',
+    const config = {
+        entry: [
+            './app/app.js',
+        ],
         output: {
             path: path.resolve(__dirname, 'assets'),
             filename: 'webpack.bundle.js'
@@ -30,6 +32,20 @@ function buildConfig (env) {
 
         plugins: []
     };
+
+    if (env === 'development') {
+        config.entry = [
+            'webpack-dev-server/client?http://localhost:8080',
+            'webpack/hot/only-dev-server',
+            './app/app.js',
+        ];
+        config.devServer = {
+            contentBase: './',
+            publicPath: '/assets/',
+            hot: false,
+            inline: true
+        }
+    }
 
     if (env === 'production') {
         config.plugins.push(

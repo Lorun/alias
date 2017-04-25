@@ -3,6 +3,40 @@ import { h, render, Component } from 'preact';
 import { store, dispatch } from './reducers';
 import { fetchWords, fetchWordsSuccess, addWord, addWordSuccess, editWord, editWordSuccess, deleteWord, deleteWordSuccess, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
 
+import { Login } from './login';
+
+
+class Router extends Component {
+    constructor() {
+        super();
+
+        this.updateHash();
+
+        window.addEventListener("hashchange", this.updateHash.bind(this));
+    }
+
+    updateHash() {
+        this.setState({
+            hash: window.location.hash ? window.location.hash.substr(1) : '/'
+        });
+    }
+
+    render(props, state) {
+        let Block = props.paths[this.state.hash];
+
+        if (Block) {
+            return (
+                <Block />
+            );
+        } else {
+            return (
+                <div className="app-notFound">404 Not found!</div>
+            );
+        }
+    }
+}
+
+
 
 class WordsList extends Component {
 
@@ -37,7 +71,7 @@ class WordForm extends Component {
                 <input type="hidden" name="id" value={ props.word.id || '' } />
                 <input type="text" name="text_en" value={ props.word.text_en || '' } maxlength="50" />
                 <input type="text" name="text_ru" value={ props.word.text_ru || '' } maxlength="50" />
-                <button type="submit">-></button>
+                <button type="submit">Add</button>
             </form>
         );
     };
@@ -162,7 +196,12 @@ class App extends Component {
 
 
 render((
-    <App />
+    <Router paths={
+        {
+            '/': App,
+            'login': Login
+        }
+    } />
 ), document.body);
 
 

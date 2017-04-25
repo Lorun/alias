@@ -4,6 +4,7 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
+    "start": "webpack-dev-server --hot --inline --env=development",
     "build:dev": "webpack --env=development --progress --colors",
     "build:prod": "webpack --env=production --progress --colors",
     "css": "postcss public/css/style.pcss -o assets/style.css -w"
@@ -31,6 +32,7 @@
     "rxjs": "^5.3.0",
     "sugarss": "^0.2.0",
     "webpack": "^2.3.3",
+    "webpack-dev-server": "^2.4.4",
     "whatwg-fetch": "^2.0.3"
   },
   "dependencies": {
