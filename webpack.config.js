@@ -35,15 +35,18 @@ function buildConfig (env) {
 
     if (env === 'development') {
         config.entry = [
-            'webpack-dev-server/client?http://localhost:8080',
+            'webpack-dev-server/client?http://local.lobarev.com:8080',
             'webpack/hot/only-dev-server',
             './app/app.js',
         ];
         config.devServer = {
+            host: 'local.lobarev.com',
+            port: 8080,
             contentBase: './',
             publicPath: '/assets/',
             hot: false,
-            inline: true
+            inline: true,
+            historyApiFallback: true
         }
     }
 

@@ -1,3 +1,5 @@
+import 'whatwg-fetch';
+
 import { h, render, Component } from 'preact';
 import { config } from './config';
 
@@ -18,7 +20,7 @@ export class Login extends Component {
     checkLogged() {
         setTimeout(() => {
             if (this.signinWin.closed) {
-                //this.router.navigate(['/']);
+                window.location.href = '/';
 
                 const token = localStorage.getItem(config.TOKEN_KEY);
 
@@ -43,6 +45,62 @@ export class Login extends Component {
         return (
             <div className="app-auth">
                 <button onClick={ this.fbLogin.bind(this) }>Login with Facebook</button>
+            </div>
+        );
+    }
+}
+
+
+export class LoginAuth extends Component {
+
+    constructor() {
+        super();
+
+        this.params = this.getQueryParams(window.location.search);
+
+        if(this.params.code) {
+            fetch(config.API_ENDPOINT + 'auth/facebook', {
+                    method: 'post',
+                    body: JSON.stringify({
+                        clientId: config.FB_CLIENT_ID,
+                        redirectUri: config.FB_REDIRECT_URI,
+                        code: this.params.code
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    }
+                })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.token) {
+                        localStorage.setItem(config.TOKEN_KEY, response.token);
+                        window.close();
+                    }
+                });
+        }
+
+    }
+
+    getQueryParams(qs) {
+        qs = qs.split('+').join(' ');
+
+        let params = {},
+            tokens,
+            re = /[?&]?([^=]+)=([^&]*)/g;
+
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+
+        return params;
+    }
+
+    render(props, state) {
+
+        //window.close();
+        return (
+            <div className="app-auth">
+                Please wait...
             </div>
         );
     }

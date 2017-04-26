@@ -3,26 +3,26 @@ import { h, render, Component } from 'preact';
 import { store, dispatch } from './reducers';
 import { fetchWords, fetchWordsSuccess, addWord, addWordSuccess, editWord, editWordSuccess, deleteWord, deleteWordSuccess, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
 
-import { Login } from './login';
+import { Login, LoginAuth } from './login';
 
 
 class Router extends Component {
     constructor() {
         super();
 
-        this.updateHash();
+        this.updatePath();
 
-        window.addEventListener("hashchange", this.updateHash.bind(this));
+        //window.addEventListener("pathnamechange", this.updateHash.bind(this));
     }
 
-    updateHash() {
+    updatePath() {
         this.setState({
-            hash: window.location.hash ? window.location.hash.substr(1) : '/'
+            path: window.location.pathname
         });
     }
 
     render(props, state) {
-        let Block = props.paths[this.state.hash];
+        let Block = props.paths[this.state.path];
 
         if (Block) {
             return (
@@ -199,7 +199,8 @@ render((
     <Router paths={
         {
             '/': App,
-            'login': Login
+            '/login': Login,
+            '/login_auth': LoginAuth,
         }
     } />
 ), document.body);
