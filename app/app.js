@@ -3,7 +3,9 @@ import { h, render, Component } from 'preact';
 import { store, dispatch } from './reducers';
 import { fetchWords, fetchWordsSuccess, addWord, addWordSuccess, editWord, editWordSuccess, deleteWord, deleteWordSuccess, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
 
-import { Login, LoginAuth } from './login';
+import { Login } from './auth/login';
+import { AuthProcess } from './auth/authProcess';
+import { isLogged } from './auth/index';
 
 
 class Router extends Component {
@@ -12,21 +14,53 @@ class Router extends Component {
 
         this.updatePath();
 
-        //window.addEventListener("pathnamechange", this.updateHash.bind(this));
+        this.routes = {
+            '/login': Login,
+            '/login_auth': AuthProcess,
+        };
+
+        if (isLogged()) {
+            this.routes['/'] = App;
+        } else {
+            this.routes['/'] = Login;
+        }
+
     }
 
-    updatePath() {
+    getRoutes() {
+        const routes = {
+            '/login': Login,
+            '/login_auth': AuthProcess,
+        };
+
+        if (isLogged()) {
+            routes['/'] = App;
+        } else {
+            routes['/'] = Login;
+        }
+
+        return routes;
+    }
+
+    updatePath(path) {
+        if (path) {
+            window.history.pushState(null,"", path);
+        }
+
         this.setState({
-            path: window.location.pathname
+            path: path || window.location.pathname
         });
     }
 
     render(props, state) {
-        let Block = props.paths[this.state.path];
+        const routes = this.getRoutes();
+        const Block = routes[this.state.path];
+
+        console.log(isLogged());
 
         if (Block) {
             return (
-                <Block />
+                <Block router={ {navigate: this.updatePath.bind(this)} } />
             );
         } else {
             return (
@@ -196,13 +230,7 @@ class App extends Component {
 
 
 render((
-    <Router paths={
-        {
-            '/': App,
-            '/login': Login,
-            '/login_auth': LoginAuth,
-        }
-    } />
+    <Router />
 ), document.body);
 
 
