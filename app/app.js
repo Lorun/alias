@@ -4,6 +4,7 @@ import { store, dispatch } from './reducers';
 import { fetchWords, fetchWordsSuccess, addWord, addWordSuccess, editWord, editWordSuccess, deleteWord, deleteWordSuccess, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
 
 import { Login } from './auth/login';
+import { Logout } from './auth/logout';
 import { AuthProcess } from './auth/authProcess';
 import { isLogged } from './auth/index';
 
@@ -55,8 +56,6 @@ class Router extends Component {
     render(props, state) {
         const routes = this.getRoutes();
         const Block = routes[this.state.path];
-
-        console.log(isLogged());
 
         if (Block) {
             return (
@@ -208,10 +207,12 @@ class App extends Component {
         dispatch(unsetEditableWord(), this);
     }
 
-    render({}, { words, editableWord }) {
+    render({}, { words, editableWord, router }) {
         return(
             <div id="wordsApp" className={this.state.editMode ? 'is-editMode' : ''}>
                 <h3>Words <button onClick={this.toggleEditMode.bind(this)}>Edit</button></h3>
+                <Logout router={ router } />
+
                 <WordForm
                     handleSubmit={ this.handleSubmit.bind(this) }
                     word={ editableWord }
