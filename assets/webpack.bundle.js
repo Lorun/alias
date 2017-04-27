@@ -4826,6 +4826,11 @@ var App = function (_Component4) {
     _createClass(App, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+            this.fetchWords();
+        }
+    }, {
+        key: 'fetchWords',
+        value: function fetchWords() {
             var _this5 = this;
 
             (0, _reducers.dispatch)((0, _actions.fetchWords)(), this).then(function (response) {

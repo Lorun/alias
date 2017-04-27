@@ -1,13 +1,15 @@
 import { createStore, combineReducers } from 'redux';
 import { type } from './actions';
 
-function words (
-    state = {
-        isFetching: false,
-        isDeleting: false,
-        items: {}
-    },
-    action) {
+export const initialState = {
+    items: {},
+    isFetching: false,
+    isDeleting: false,
+    editableWord: {},
+    editMode: false
+};
+
+export const reducer = (state = initialState, action) => {
 
     let nextState;
 

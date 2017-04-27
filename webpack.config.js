@@ -5,7 +5,7 @@ const path = require('path');
 function buildConfig (env) {
     const config = {
         entry: [
-            './app/app.js',
+            './app/index.js',
         ],
         output: {
             path: path.resolve(__dirname, 'assets'),
@@ -37,7 +37,7 @@ function buildConfig (env) {
         config.entry = [
             'webpack-dev-server/client?http://local.lobarev.com:8080',
             'webpack/hot/only-dev-server',
-            './app/app.js',
+            './app/index.js',
         ];
         config.devServer = {
             host: 'local.lobarev.com',

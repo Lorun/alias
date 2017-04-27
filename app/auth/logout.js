@@ -9,12 +9,12 @@ export class Logout extends Component {
 
     logout() {
         logout();
-        this.props.router.href = '/';
+        this.props.router.navigate('/login');
     }
 
     render(props, state) {
         return (
-            <button onClick={ this.logout }>Logout</button>
+            <button onClick={ this.logout.bind(this) }>Logout</button>
         );
     }
 }
