@@ -1,4 +1,3 @@
-
 export const config = {
 
     TOKEN_KEY: 'auth_token',

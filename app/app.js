@@ -1,11 +1,14 @@
 import { h, Component } from 'preact';
-
-import { store, dispatch } from './reducers';
-import { fetchWords, fetchWordsSuccess, addWord, addWordSuccess, editWord, editWordSuccess, deleteWord, deleteWordSuccess, setEditableWord, unsetEditableWord, toggleEditMode } from './actions';
+import { bindActionCreators } from 'redux';
 
 
-import { WordForm } from './components/wordForm';
-import { WordsList } from './components/wordList';
+import { store } from './store';
+import { dispatch } from './helpers/dispatch';
+import * as actionCreators from './words/actions';
+import * as selectors from './words/selector';
+
+import { WordForm } from './words/wordForm';
+import { WordsList } from './words/wordList';
 import { Logout } from './auth/logout';
 
 
@@ -13,34 +16,24 @@ export class App extends Component {
     constructor() {
         super();
 
-        this.state = {
-            editMode: false,
-            editableWord: {},
-            words: {
-                isFetching: false,
-                isDeleting: false,
-                items: {}
-            }
-        };
+        //this.state = selectors.get();
+        this.setState(selectors.get());
+
+        store.subscribe(() => {
+            this.setState(selectors.get());
+            console.log(this.state)
+        });
+
+        this.boundActionCreators = bindActionCreators(actionCreators, store.dispatch);
     }
 
     componentDidMount() {
-        this.fetchWords();
-    }
-
-    fetchWords() {
-        dispatch(fetchWords(), this)
-            .then(response => {
-                return response.json();
-            })
-            .then(words => {
-                dispatch(fetchWordsSuccess(words), this);
-            });
+        this.boundActionCreators.get();
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        if (this.state.words.isFetching) {
+        if (this.state.isFetching) {
             return;
         }
 
@@ -53,21 +46,21 @@ export class App extends Component {
         }
 
         if (id) {
-            dispatch(editWord(id, text_en, text_ru), this)
+            dispatch(actionCreators.editWord(id, text_en, text_ru), this)
                 .then(response => {
                     return response.json();
                 })
                 .then(result => {
-                    dispatch(editWordSuccess(id), this);
-                    dispatch(unsetEditableWord(), this);
+                    dispatch(actionCreators.editWordSuccess(id), this);
+                    dispatch(actionCreators.unsetEditableWord(), this);
                 });
         } else {
-            dispatch(addWord(text_en, text_ru), this)
+            dispatch(actionCreators.addWord(text_en, text_ru), this)
                 .then(response => {
                     return response.json();
                 })
                 .then(result => {
-                    dispatch(addWordSuccess(result.word), this);
+                    dispatch(actionCreators.addWordSuccess(result.word), this);
                 });
         }
 
@@ -75,41 +68,43 @@ export class App extends Component {
     }
 
     handleSetEditableWord(id) {
-        if (this.state.words.isFetching) {
+        if (this.state.isFetching) {
             return;
         }
 
-        let word = this.state.words.items[id];
+        let word = this.state.items[id];
 
         if (word) {
-            dispatch(setEditableWord(word.id, word.text_en, word.text_ru), this);
+            this.boundActionCreators.setEditableWord(word.id, word.text_en, word.text_ru);
         }
     }
 
     handleDelete(id) {
-        if (this.state.words.isDeleting) {
+        if (this.state.isDeleting) {
             return;
         }
 
-        dispatch(deleteWord(id), this)
+        dispatch(actionCreators.deleteWord(id), this)
             .then(response => {
                 return response.json();
             })
             .then(result => {
-                dispatch(deleteWordSuccess(id), this);
+                dispatch(actionCreators.deleteWordSuccess(id), this);
             });
 
         if (id === this.state.editableWord.id) {
-            dispatch(unsetEditableWord(), this);
+            this.boundActionCreators.unsetEditableWord();
         }
     }
 
     toggleEditMode() {
-        dispatch(toggleEditMode(), this);
-        dispatch(unsetEditableWord(), this);
+        this.boundActionCreators.toggleEditMode();
+        if (this.state.editableWord.id) {
+            this.boundActionCreators.unsetEditableWord();
+        }
     }
 
-    render(props, { words, editableWord }) {
+    render(props, { items, editableWord }) {
         return(
             <div id="wordsApp" className={this.state.editMode ? 'is-editMode' : ''}>
                 <h3>Words <button onClick={this.toggleEditMode.bind(this)}>Edit</button></h3>
@@ -120,7 +115,7 @@ export class App extends Component {
                     word={ editableWord }
                 />
                 <WordsList
-                    words={ words }
+                    words={ items }
                     editableWord={ editableWord }
                     handleDelete={ this.handleDelete.bind(this) }
                     handleSetEditableWord={ this.handleSetEditableWord.bind(this) }
@@ -131,6 +126,11 @@ export class App extends Component {
 }
 
 
+/*const connect = (component) => {
+    console.log(component);
+};
+
+connect(App);*/
 
 
 

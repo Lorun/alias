@@ -1,5 +1,4 @@
-import { createStore, combineReducers } from 'redux';
-import { type } from './actions';
+import * as actionTypes from './actionTypes';
 
 export const initialState = {
     items: {},
@@ -14,12 +13,12 @@ export const reducer = (state = initialState, action) => {
     let nextState;
 
     switch (action.type) {
-        case type.FETCH_WORDS:
+        case actionTypes.FETCH_WORDS:
             return {
                 ...state,
                 isFetching: true
             };
-        case type.FETCH_WORDS_SUCCESS:
+        case actionTypes.FETCH_WORDS_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
@@ -27,12 +26,12 @@ export const reducer = (state = initialState, action) => {
                     ...action.payload
                 }
             };
-        case type.ADD_WORD:
+        case actionTypes.ADD_WORD:
             return {
                 ...state,
                 isFetching: true
             };
-        case type.ADD_WORD_SUCCESS:
+        case actionTypes.ADD_WORD_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
@@ -45,7 +44,7 @@ export const reducer = (state = initialState, action) => {
                     }
                 }
             };
-        case type.EDIT_WORD:
+        case actionTypes.EDIT_WORD:
             return {
                 ...state,
                 isFetching: true,
@@ -58,7 +57,7 @@ export const reducer = (state = initialState, action) => {
                     }
                 }
             };
-        case type.EDIT_WORD_SUCCESS:
+        case actionTypes.EDIT_WORD_SUCCESS:
             if (!state.items[action.id]) {
                 return state;
             }
@@ -66,61 +65,40 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false
             };
-        case type.DELETE_WORD:
-            /*Object.assign({}, state, {
-                isDeleting: true
-            });*/
+        case actionTypes.DELETE_WORD:
             return {
                 ...state,
                 isDeleting: true
             };
-        case type.DELETE_WORD_SUCCESS:
+        case actionTypes.DELETE_WORD_SUCCESS:
             nextState = {
                 ...state,
                 isDeleting: false
             };
             delete nextState.items[action.id];
             return nextState;
+
+        case actionTypes.SET_EDITABLE_WORD:
+            return {
+                ...state,
+                editableWord: Object.assign({}, state.editableWord, {
+                    id: action.id,
+                    text_en: action.text_en,
+                    text_ru: action.text_ru
+                })
+            };
+        case actionTypes.UNSET_EDITABLE_WORD:
+            return {
+                ...state,
+                editableWord: {}
+            };
+
+        case actionTypes.TOGGLE_EDIT_MODE:
+            return {
+                ...state,
+                editMode: !state.editMode
+            };
         default:
             return state;
     }
-}
-
-function editableWord (state = {}, action) {
-    switch (action.type) {
-        case type.SET_EDITABLE_WORD:
-            return Object.assign({}, state, {
-                id: action.id,
-                text_en: action.text_en,
-                text_ru: action.text_ru
-            });
-        case type.UNSET_EDITABLE_WORD:
-            return {};
-        default:
-            return state;
-    }
-}
-
-function editMode(state = false, action) {
-    switch (action.type) {
-        case type.TOGGLE_EDIT_MODE:
-            return !state;
-        default:
-            return state;
-    }
-}
-
-const wordsApp = combineReducers({
-    words,
-    editableWord,
-    editMode
-});
-
-export const store = createStore(wordsApp);
-
-export const dispatch = (action, component) => {
-    const result = store.dispatch(action);
-    component.setState(store.getState());
-
-    return result.payload || result;
 };

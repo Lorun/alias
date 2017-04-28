@@ -3,8 +3,8 @@ import { h, Component } from 'preact';
 export class WordsList extends Component {
 
     render(props, state) {
-        let listItems = Object.keys(props.words.items).sort((a, b) => b - a).map((id) => {
-            let word = props.words.items[id];
+        let listItems = Object.keys(props.words).sort((a, b) => b - a).map((id) => {
+            let word = props.words[id];
             let className = 'wordsList-item' + (props.editableWord.id && props.editableWord.id === +id ? ' is-editable' : '');
             return (
                 <li className={className}>

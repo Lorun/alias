@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 
 import * as actionTypes from './actionTypes';
-import { config } from './config';
+import { config } from '../config';
 
 export const updateToken = (token) => ({
     type: actionTypes.UPDATE_TOKEN,
