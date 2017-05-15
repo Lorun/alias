@@ -40,22 +40,11 @@ export const addWordSuccess = (word) => ({
     text_ru: word.text_ru
 });
 
-export const editWord = (id, text_en, text_ru) => ({
+export const saveWord = (id, text_en, text_ru) => ({
     type: actionTypes.EDIT_WORD,
     id,
     text_en,
-    text_ru,
-    payload: fetch(config.API_ENDPOINT + 'words/' + id, {
-        method: 'PUT',
-        body: JSON.stringify({
-            text_en,
-            text_ru
-        }),
-        headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
-        }
-    })
+    text_ru
 });
 
 export const editWordSuccess = (id) => ({
@@ -99,6 +88,30 @@ export const get = () => {
             .then(response => response.json())
             .then(response => {
                 dispatch(fetchWordsSuccess(response));
+            });
+    };
+};
+
+
+export const editWord = (id, text_en, text_ru) => {
+    return dispatch => {
+        dispatch(saveWord(id, text_en, text_ru));
+
+        fetch(config.API_ENDPOINT + 'words/' +id, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    text_en,
+                    text_ru
+                }),
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(response => {
+                dispatch(editWordSuccess(id));
+                dispatch(unsetEditableWord());
             });
     };
 };

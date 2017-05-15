@@ -46,14 +46,16 @@ export class App extends Component {
         }
 
         if (id) {
-            dispatch(actionCreators.editWord(id, text_en, text_ru), this)
+            this.boundActionCreators.editWord(id, text_en, text_ru);
+
+            /*dispatch(actionCreators.editWord(id, text_en, text_ru), this)
                 .then(response => {
                     return response.json();
                 })
                 .then(result => {
                     dispatch(actionCreators.editWordSuccess(id), this);
                     dispatch(actionCreators.unsetEditableWord(), this);
-                });
+                });*/
         } else {
             dispatch(actionCreators.addWord(text_en, text_ru), this)
                 .then(response => {
