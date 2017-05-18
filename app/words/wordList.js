@@ -8,9 +8,12 @@ export class WordsList extends Component {
             let className = 'wordsList-item' + (props.editableWord.id && props.editableWord.id === +id ? ' is-editable' : '');
             return (
                 <li className={className}>
-                    <b>#{word.id}</b> {word.text_en}: {word.text_ru}
-                    <button onClick={ props.handleSetEditableWord.bind(null, word.id) } className="wordsList-handle">edit</button>
-                    <button onClick={ props.handleDelete.bind(null, word.id) } className="wordsList-handle">×</button>
+                    <span className="item-col">{word.text_en}</span>
+                    <span className="item-col">{word.text_ru}</span>
+                    <span className="item-controls">
+                        <button onClick={ props.handleSetEditableWord.bind(null, word.id) } className="wordsList-handle">edit</button>
+                        <button onClick={ props.handleDelete.bind(null, word.id) } className="wordsList-handle">×</button>
+                    </span>
                 </li>
             );
         });

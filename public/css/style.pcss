@@ -16,6 +16,7 @@ a {
 
 #wordsApp {
     padding-top: 40px;
+    padding-bottom: 40px;
     color: var(--font-color);
     font-size: 14px;
 }
@@ -75,7 +76,18 @@ a {
     }
 
     .wordsList-item {
-        padding: 5px 10px;
+        display: flex;
+        border-bottom: 1px solid #eeeeee;
+
+        .item-col {
+            width: 50%;
+            padding: 12px 8px;
+            line-height: 16px;
+            
+            &:first-child {
+                background-color: #fafcfa;
+            }
+        }
 
         &.is-editable {
             background-color: #abffd1;
