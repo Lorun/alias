@@ -15,6 +15,7 @@ module.exports = (ctx) => ({
             mediaQuery: false,
             minPixelValue: 0
         },
+        'postcss-hexrgba': {},
         'autoprefixer': {},
     }
 })

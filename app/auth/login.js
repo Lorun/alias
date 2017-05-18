@@ -45,7 +45,11 @@ export class Login extends Component {
     render(props, state) {
         return (
             <div className="app-auth">
-                <button onClick={ this.fbLogin.bind(this) }>Login with Facebook</button>
+                <div className="auth-wrapper">
+                    <h1 className="auth-title">Words Keeper</h1>
+                    <p className="auth-desc">Keep your unknown words into one&nbsp;place</p>
+                    <button className="btn btn--big btn--facebook" onClick={ this.fbLogin.bind(this) }>Login with Facebook</button>
+                </div>
             </div>
         );
     }
