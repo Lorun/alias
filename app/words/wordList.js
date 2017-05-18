@@ -15,7 +15,7 @@ export class WordsList extends Component {
             );
         });
         return(
-            <div className="wordsApp-wordsList">
+            <div className="app-wordsList">
                 <ul>
                     {listItems}
                 </ul>

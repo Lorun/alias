@@ -14,7 +14,7 @@ export class Logout extends Component {
 
     render(props, state) {
         return (
-            <button onClick={ this.logout.bind(this) }>Logout</button>
+            <button className="btn app-logout" onClick={ this.logout.bind(this) }>Logout</button>
         );
     }
 }

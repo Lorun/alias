@@ -107,8 +107,12 @@ export class App extends Component {
     render(props, { items, editableWord }) {
         return(
             <div id="wordsApp" className={this.state.editMode ? 'is-editMode' : ''}>
-                <h3>Words <button onClick={this.toggleEditMode.bind(this)}>Edit</button></h3>
-                <Logout router={ props.router } />
+                <div className="app-header">
+                    <div className="header-title">Words</div>
+                    <button className="header-edit" onClick={this.toggleEditMode.bind(this)}>Edit</button>
+                    <Logout router={ props.router } />
+                </div>
+
 
                 <WordForm
                     handleSubmit={ this.handleSubmit.bind(this) }
