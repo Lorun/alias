@@ -22,7 +22,6 @@ export class WordsList extends Component {
                 <ul>
                     {listItems}
                 </ul>
-                { props.words.isFetching ? <div className="wordsList-loading" >Loading...</div> : '' }
             </div>
         );
     }

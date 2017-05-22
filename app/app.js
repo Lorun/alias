@@ -3,25 +3,21 @@ import { bindActionCreators } from 'redux';
 
 
 import { store } from './store';
-import { dispatch } from './helpers/dispatch';
 import * as actionCreators from './words/actions';
 import * as selectors from './words/selector';
 
 import { WordForm } from './words/wordForm';
 import { WordsList } from './words/wordList';
-import { Logout } from './auth/logout';
 
 
 export class App extends Component {
     constructor() {
         super();
 
-        //this.state = selectors.get();
         this.setState(selectors.get());
 
         store.subscribe(() => {
             this.setState(selectors.get());
-            console.log(this.state)
         });
 
         this.boundActionCreators = bindActionCreators(actionCreators, store.dispatch);
@@ -33,7 +29,7 @@ export class App extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        if (this.state.isFetching) {
+        if (this.state.isLoading) {
             return;
         }
 
@@ -47,30 +43,15 @@ export class App extends Component {
 
         if (id) {
             this.boundActionCreators.editWord(id, text_en, text_ru);
-
-            /*dispatch(actionCreators.editWord(id, text_en, text_ru), this)
-                .then(response => {
-                    return response.json();
-                })
-                .then(result => {
-                    dispatch(actionCreators.editWordSuccess(id), this);
-                    dispatch(actionCreators.unsetEditableWord(), this);
-                });*/
         } else {
-            dispatch(actionCreators.addWord(text_en, text_ru), this)
-                .then(response => {
-                    return response.json();
-                })
-                .then(result => {
-                    dispatch(actionCreators.addWordSuccess(result.word), this);
-                });
+            this.boundActionCreators.addWord(text_en, text_ru);
         }
 
         event.target.reset();
     }
 
     handleSetEditableWord(id) {
-        if (this.state.isFetching) {
+        if (this.state.isLoading) {
             return;
         }
 
@@ -82,17 +63,11 @@ export class App extends Component {
     }
 
     handleDelete(id) {
-        if (this.state.isDeleting) {
+        if (this.state.isLoading) {
             return;
         }
 
-        dispatch(actionCreators.deleteWord(id), this)
-            .then(response => {
-                return response.json();
-            })
-            .then(result => {
-                dispatch(actionCreators.deleteWordSuccess(id), this);
-            });
+        this.boundActionCreators.deleteWord(id);
 
         if (id === this.state.editableWord.id) {
             this.boundActionCreators.unsetEditableWord();
@@ -110,9 +85,9 @@ export class App extends Component {
         return(
             <div id="wordsApp" className={this.state.editMode ? 'is-editMode' : ''}>
                 <div className="app-header">
+                    { this.state.isLoading ? <div className="header-loading" >Loading...</div> : '' }
                     <div className="header-title">Words</div>
                     <button className="header-edit" onClick={this.toggleEditMode.bind(this)}>Edit</button>
-                    <Logout router={ props.router } />
                 </div>
 
 

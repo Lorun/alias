@@ -2,8 +2,7 @@ import * as actionTypes from './actionTypes';
 
 export const initialState = {
     items: {},
-    isFetching: false,
-    isDeleting: false,
+    isLoading: false,
     editableWord: {},
     editMode: false
 };
@@ -13,28 +12,23 @@ export const reducer = (state = initialState, action) => {
     let nextState;
 
     switch (action.type) {
+        case actionTypes.SET_LOADING:
+            return {
+                ...state,
+                isLoading: true
+            };
         case actionTypes.FETCH_WORDS:
             return {
                 ...state,
-                isFetching: true
-            };
-        case actionTypes.FETCH_WORDS_SUCCESS:
-            return {
-                ...state,
-                isFetching: false,
+                isLoading: false,
                 items: {
                     ...action.payload
                 }
             };
-        case actionTypes.ADD_WORD:
+        case actionTypes.PUSH_WORD:
             return {
                 ...state,
-                isFetching: true
-            };
-        case actionTypes.ADD_WORD_SUCCESS:
-            return {
-                ...state,
-                isFetching: false,
+                isLoading: false,
                 items: {
                     ...state.items,
                     [action.id]: {
@@ -47,7 +41,7 @@ export const reducer = (state = initialState, action) => {
         case actionTypes.EDIT_WORD:
             return {
                 ...state,
-                isFetching: true,
+                isLoading: true,
                 items: {
                     ...state.items,
                     [action.id]: {
@@ -63,17 +57,12 @@ export const reducer = (state = initialState, action) => {
             }
             return {
                 ...state,
-                isFetching: false
+                isLoading: false
             };
         case actionTypes.DELETE_WORD:
-            return {
-                ...state,
-                isDeleting: true
-            };
-        case actionTypes.DELETE_WORD_SUCCESS:
             nextState = {
                 ...state,
-                isDeleting: false
+                isLoading: false
             };
             delete nextState.items[action.id];
             return nextState;

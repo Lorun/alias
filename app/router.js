@@ -4,17 +4,19 @@ import { isLogged } from './auth/index';
 import { App } from './App';
 import { Login } from './auth/login';
 import { AuthProcess } from './auth/authProcess';
+import { Settings } from './settings/settings';
 
 const getRoutes = () => {
     const routes = {
+        '/': App,
         '/login': Login,
         '/login_auth': AuthProcess,
+        '/settings': Settings,
     };
 
-    if (isLogged()) {
-        routes['/'] = App;
-    } else {
+    if (!isLogged()) {
         routes['/'] = Login;
+        routes['/settings'] = Login;
     }
 
     return routes;
