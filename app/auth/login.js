@@ -23,7 +23,9 @@ export class Login extends Component {
                 this.props.router.navigate('/');
 
                 const token = localStorage.getItem(config.TOKEN_KEY);
-                store.dispatch(actionCreators.updateToken(token));
+                const user = JSON.parse(localStorage.getItem(config.USER_KEY));
+
+                store.dispatch(actionCreators.updateToken(token, user));
 
                 if (token && token.split('.').length === 3) {
                     try {

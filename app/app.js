@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { store } from './store';
 import * as actionCreators from './words/actions';
 import * as selectors from './words/selector';
+import * as authSelectors from './auth/selector';
 
 import { WordForm } from './words/wordForm';
 import { WordsList } from './words/wordList';
@@ -21,9 +22,12 @@ export class App extends Component {
         });
 
         this.boundActionCreators = bindActionCreators(actionCreators, store.dispatch);
+
+        console.log(store.getState());
     }
 
     componentDidMount() {
+        this.user = authSelectors.getUser();
         this.boundActionCreators.get();
     }
 

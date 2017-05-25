@@ -4,10 +4,13 @@ import * as actionCreators from './actions';
 
 export const isLogged = () => {
     let token = store.getState().auth.token;
+    let user = store.getState().auth.user;
 
     if (!token) {
         token = localStorage.getItem(config.TOKEN_KEY);
-        store.dispatch(actionCreators.updateToken(token));
+        user = JSON.parse(localStorage.getItem(config.USER_KEY));
+
+        store.dispatch(actionCreators.updateToken(token, user));
     }
 
     return !!token;

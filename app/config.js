@@ -1,5 +1,7 @@
 export const config = {
 
+    USER_KEY: 'user',
+
     TOKEN_KEY: 'auth_token',
     API_ENDPOINT: 'http://1.lobarev.com/api/',
 

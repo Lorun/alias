@@ -3,9 +3,10 @@ import 'whatwg-fetch';
 import * as actionTypes from './actionTypes';
 import { config } from '../config';
 
-export const updateToken = (token) => ({
+export const updateToken = (token, user) => ({
     type: actionTypes.UPDATE_TOKEN,
-    token
+    token,
+    user
 });
 
 export const getToken = (code) => ({

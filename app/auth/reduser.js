@@ -13,7 +13,8 @@ export const reducer = (state = initialState, action) => {
         case actionTypes.UPDATE_TOKEN:
             return {
                 ...state,
-                token: action.token
+                token: action.token,
+                user: action.user
             };
         default:
             return state;

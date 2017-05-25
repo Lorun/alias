@@ -21,6 +21,7 @@ export const authenticate = () => {
             .then(response => {
                 if (response.token) {
                     localStorage.setItem(config.TOKEN_KEY, response.token);
+                    localStorage.setItem(config.USER_KEY, JSON.stringify( {id: 1} ));
 
                     window.close();
                 }
