@@ -28,7 +28,7 @@ export class App extends Component {
 
     componentDidMount() {
         this.user = authSelectors.getUser();
-        this.boundActionCreators.get();
+        this.boundActionCreators.get(this.user.id);
     }
 
     handleSubmit(event) {
@@ -48,14 +48,14 @@ export class App extends Component {
         if (id) {
             this.boundActionCreators.editWord(id, text_en, text_ru);
         } else {
-            this.boundActionCreators.addWord(text_en, text_ru);
+            this.boundActionCreators.addWord(text_en, text_ru, this.user.id);
         }
 
         event.target.reset();
     }
 
     handleSetEditableWord(id) {
-        if (this.state.isLoading) {
+        if (this.state.isLoading || !this.state.editMode) {
             return;
         }
 
@@ -89,10 +89,13 @@ export class App extends Component {
         return(
             <div id="wordsApp" className={this.state.editMode ? 'is-editMode' : ''}>
                 <div className="app-header">
-                    { this.state.isLoading ? <div className="header-loading" >Loading...</div> : '' }
                     <div className="header-title">Words</div>
-                    <button className="header-edit" onClick={this.toggleEditMode.bind(this)}>Edit</button>
+                    { this.state.editMode
+                        ? <button className="header-edit icon-close" onClick={this.toggleEditMode.bind(this)}></button>
+                        : <button className="header-edit icon-pencil-alt" onClick={this.toggleEditMode.bind(this)}></button> }
                 </div>
+
+                { this.state.isLoading ? <div className="header-loading" >Loading...</div> : '' }
 
 
                 <WordForm

@@ -59,11 +59,16 @@ export const toggleEditMode = () => ({
 
 
 
-export const get = () => {
+export const get = (user_id) => {
     return dispatch => {
         dispatch(setLoading());
 
-        fetch(config.API_ENDPOINT + 'words')
+        fetch(config.API_ENDPOINT + 'words',
+            {
+                body: {
+                    user_id
+                }
+            })
             .then(response => response.json())
             .then(response => {
                 dispatch(fetchWords(response));
@@ -76,7 +81,8 @@ export const editWord = (id, text_en, text_ru) => {
     return dispatch => {
         dispatch(saveWord(id, text_en, text_ru));
 
-        fetch(config.API_ENDPOINT + 'words/' +id, {
+        fetch(config.API_ENDPOINT + 'words/' +id,
+            {
                 method: 'PUT',
                 body: JSON.stringify({
                     text_en,
@@ -95,7 +101,7 @@ export const editWord = (id, text_en, text_ru) => {
     };
 };
 
-export const addWord = (text_en, text_ru) => {
+export const addWord = (text_en, text_ru, user_id) => {
     return dispatch => {
         dispatch(setLoading());
 
@@ -103,7 +109,8 @@ export const addWord = (text_en, text_ru) => {
                 method: 'post',
                 body: JSON.stringify({
                     text_en,
-                    text_ru
+                    text_ru,
+                    user_id
                 }),
                 headers: {
                     'Accept': 'application/json, text/plain, */*',

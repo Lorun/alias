@@ -18,6 +18,6 @@ export const isLogged = () => {
 
 
 export const logout = () => {
-    localStorage.removeItem(config.TOKEN_KEY);
-    store.dispatch(actionCreators.updateToken(null));
+    localStorage.clear();
+    store.dispatch(actionCreators.updateToken(null, null));
 };
