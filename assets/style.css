@@ -700,7 +700,7 @@ button {
     padding: 0.25rem;
 }
 .app-header .header-edit.icon-pencil-alt {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     line-height: 1.5rem;
 }
 .app-header .header-edit.icon-pencil-alt:before {
@@ -736,7 +736,7 @@ button {
     top: 4px;
     right: 4px;
     color: #fff;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     line-height: 1.5rem;
     padding: 0.25rem;
 }
