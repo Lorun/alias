@@ -63,12 +63,7 @@ export const get = (user_id) => {
     return dispatch => {
         dispatch(setLoading());
 
-        fetch(config.API_ENDPOINT + 'words',
-            {
-                body: {
-                    user_id
-                }
-            })
+        fetch(config.API_ENDPOINT + 'words?user_id=' +user_id)
             .then(response => response.json())
             .then(response => {
                 dispatch(fetchWords(response));
