@@ -93,10 +93,9 @@ export class App extends Component {
                     { this.state.editMode
                         ? <button className="header-edit icon-close" onClick={this.toggleEditMode.bind(this)}></button>
                         : <button className="header-edit icon-pencil-alt" onClick={this.toggleEditMode.bind(this)}></button> }
+                    <button className="header-settings icon-gear" onClick={props.router.navigate.bind(this, '/settings')}></button>
+                    { this.state.isLoading ? <div className="header-loading" >Loading...</div> : '' }
                 </div>
-
-                { this.state.isLoading ? <div className="header-loading" >Loading...</div> : '' }
-
 
                 <WordForm
                     handleSubmit={ this.handleSubmit.bind(this) }
@@ -112,55 +111,3 @@ export class App extends Component {
         );
     }
 }
-
-
-/*const connect = (component) => {
-    console.log(component);
-};
-
-connect(App);*/
-
-
-
-
-
-
-/*
-import { Board, Team } from './board';
-
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/map';
-
-
-console.log(Observable);
-
-let board = new Board();
-board.draw();
-
-console.log(new Team('Kittens'));
-
-
-var game = {
-    startGame: () => {
-        console.log('Game started');
-        //this.onNext('startGame');
-    },
-    onNext: (type) => {
-
-    }
-};
-
-var start = new Subject();
-
-
-
-var tick = Observable.from( start );
-tick.subscribe(game.startGame);
-
-start.subscribe(() => console.log('Sub 1'));
-start.subscribe(() => console.log('Sub 2'));
-start.subscribe(() => console.log('Sub 5'));
-
-start.next();*/

@@ -11,7 +11,7 @@ export class Settings extends Component {
         return (
             <div id="wordsApp">
                 <div className="app-header">
-                    <button className="btn header-back" onClick={ props.router.navigate.bind(this, '/') }>back</button>
+                    <button className="btn header-back icon-arrow-left" onClick={ props.router.navigate.bind(this, '/') }></button>
                     <div className="header-title">Settings</div>
                 </div>
 

@@ -15,6 +15,15 @@ a {
     color: var(--link-color);
 }
 
+button {
+    outline: none;
+    border: none;
+    -webkit-appearance: button;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    background: transparent;
+}
+
 #wordsApp {
     padding-top: 40px;
     color: var(--font-color);
@@ -165,20 +174,21 @@ a {
 
     .header-edit {
         position: absolute;
-        top: 8px;
-        left: 8px;
+        top: 4px;
+        left: 4px;
         color: #fff;
+        padding: 4px;
 
         &.icon-pencil-alt {
             font-size: 20px;
-            line-height: 20px;
+            line-height: 24px;
             &:before {
                 margin: 0;
             }
         }
         &.icon-close {
             font-size: 14px;
-            line-height: 20px;
+            line-height: 24px;
         }
     }
 
@@ -195,10 +205,30 @@ a {
 
     .header-loading {
         position: absolute;
-        top: 8px;
-        left: 8px;
+        top: 0;
+        left: 4rem;
+        right: 4rem;
+        background-color: var(--green);
+        line-height: 2.5rem;
         color: rgba(#fff, 0.5);
         font-size: 14px;
+        text-align: center;
+    }
+
+    .header-settings {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        color: #fff;
+        font-size: 20px;
+        line-height: 24px;
+        padding: 4px;
+        &:before {
+            margin: 0;
+        }
+        &:active {
+            color: rgba(#fff, 0.7);
+        }
     }
 }
 
