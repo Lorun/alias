@@ -16,6 +16,7 @@ export class Settings extends Component {
                 </div>
 
                 <div className="app-settings">
+
                     <Logout router={ props.router } />
                 </div>
             </div>
