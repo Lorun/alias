@@ -27,6 +27,7 @@ export class Settings extends Component {
 
     render(props, state) {
         const user = this.state.user;
+        const avatar_style = "background-image: url(" + user.avatar + ")";
         return (
             <div id="wordsApp">
                 <div className="app-header">
@@ -36,8 +37,8 @@ export class Settings extends Component {
 
                 <div className="app-settings">
                     <div className="settings-userInfo">
-                        <img src={user.avatar} width="50" height="50" alt=""/>
-                        <b>{user.name}</b>
+                        <span className="userInfo-avatar" style={avatar_style}></span>
+                        <h3 className="userInfo-name">{user.name}</h3>
                     </div>
 
                     <br/>

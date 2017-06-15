@@ -751,6 +751,24 @@ button {
 .app-settings {
     padding: 0.5rem;
 }
+.app-settings .settings-userInfo {
+    text-align: center;
+    padding-top: 1rem;
+}
+.app-settings .settings-userInfo .userInfo-avatar {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-position: 50% 50%;
+    border-radius: 25px;
+    margin-bottom: 0.5em;
+}
+.app-settings .settings-userInfo .userInfo-name {
+    font-weight: bold;
+    font-size: 1em;
+    margin: 0 0 0.5em;
+}
 /* LOGOUT */
 .app-logout {
     width: 100%;
