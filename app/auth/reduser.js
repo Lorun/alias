@@ -16,8 +16,7 @@ export const reducer = (state = initialState, action) => {
         case actionTypes.UPDATE_TOKEN:
             return {
                 ...state,
-                token: action.token,
-                user: action.user
+                token: action.token
             };
         case actionTypes.SET_USER_DATA:
             return {

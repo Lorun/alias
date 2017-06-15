@@ -25,8 +25,8 @@ export class App extends Component {
     }
 
     componentDidMount() {
-        this.user = authSelectors.getUser();
-        this.boundActionCreators.get(this.user.id);
+        this.token = authSelectors.getToken();
+        this.boundActionCreators.get(this.token);
     }
 
     handleSubmit(event) {
@@ -44,9 +44,9 @@ export class App extends Component {
         }
 
         if (id) {
-            this.boundActionCreators.editWord(id, text_en, text_ru);
+            this.boundActionCreators.editWord(id, text_en, text_ru, this.token);
         } else {
-            this.boundActionCreators.addWord(text_en, text_ru, this.user.id);
+            this.boundActionCreators.addWord(text_en, text_ru, this.token);
         }
 
         event.target.reset();
@@ -69,7 +69,7 @@ export class App extends Component {
             return;
         }
 
-        this.boundActionCreators.deleteWord(id);
+        this.boundActionCreators.deleteWord(id, this.token);
 
         if (id === this.state.editableWord.id) {
             this.boundActionCreators.unsetEditableWord();

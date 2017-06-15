@@ -59,11 +59,17 @@ export const toggleEditMode = () => ({
 
 
 
-export const get = (user_id) => {
+export const get = (token) => {
     return dispatch => {
         dispatch(setLoading());
 
-        fetch(config.API_ENDPOINT + 'words?user_id=' +user_id)
+        fetch(config.API_ENDPOINT + 'words',
+            {
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
             .then(response => response.json())
             .then(response => {
                 dispatch(fetchWords(response));
@@ -72,7 +78,7 @@ export const get = (user_id) => {
 };
 
 
-export const editWord = (id, text_en, text_ru) => {
+export const editWord = (id, text_en, text_ru, token) => {
     return dispatch => {
         dispatch(saveWord(id, text_en, text_ru));
 
@@ -85,7 +91,8 @@ export const editWord = (id, text_en, text_ru) => {
                 }),
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
                 }
             })
             .then(response => response.json())
@@ -96,7 +103,7 @@ export const editWord = (id, text_en, text_ru) => {
     };
 };
 
-export const addWord = (text_en, text_ru, user_id) => {
+export const addWord = (text_en, text_ru, token) => {
     return dispatch => {
         dispatch(setLoading());
 
@@ -104,12 +111,12 @@ export const addWord = (text_en, text_ru, user_id) => {
                 method: 'post',
                 body: JSON.stringify({
                     text_en,
-                    text_ru,
-                    user_id
+                    text_ru
                 }),
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
                 }
             })
             .then(response => response.json())
@@ -119,12 +126,17 @@ export const addWord = (text_en, text_ru, user_id) => {
     };
 };
 
-export const deleteWord = (id) => {
+export const deleteWord = (id, token) => {
     return dispatch => {
         dispatch(setLoading());
 
-        fetch(config.API_ENDPOINT + 'words/' + id, {
-                method: 'DELETE'
+        fetch(config.API_ENDPOINT + 'words/' + id,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    'Authorization': 'Bearer ' + token
+                }
             })
             .then(response => response.json())
             .then(response => {

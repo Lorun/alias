@@ -21,13 +21,12 @@ export class Settings extends Component {
     }
 
     componentDidMount() {
-        this.user = authSelectors.getUser();
-        this.boundActionCreators.getUserData(this.user.id, authSelectors.getToken());
+        this.token = authSelectors.getToken();
+        this.boundActionCreators.getUserData(this.token);
     }
 
     render(props, state) {
         const user = this.state.user;
-        console.log(user);
         return (
             <div id="wordsApp">
                 <div className="app-header">

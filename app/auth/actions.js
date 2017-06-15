@@ -32,9 +32,9 @@ export const setUserData = (user) => {
     }
 };
 
-export const getUserData = (user_id, token) => {
+export const getUserData = (token) => {
     return dispatch => {
-        fetch(config.API_ENDPOINT + 'user/' + user_id,
+        fetch(config.API_ENDPOINT + 'user/show',
             {
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8',
