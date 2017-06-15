@@ -23,3 +23,27 @@ export const getToken = (code) => ({
             }
         }).then(response => response.json())
 });
+
+
+export const setUserData = (user) => {
+    return {
+        type: actionTypes.SET_USER_DATA,
+        payload: user
+    }
+};
+
+export const getUserData = (user_id, token) => {
+    return dispatch => {
+        fetch(config.API_ENDPOINT + 'user/' + user_id,
+            {
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(response => response.json())
+            .then(response => {
+                dispatch(setUserData(response));
+            });
+    };
+};

@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 
 import { reducer as authReducer } from './auth/reduser';
 import { reducer as wordReducer } from './words/reduser';
+import { reducer as settingsReducer } from './settings/reduser';
 
 const appReducers = combineReducers({
     auth: authReducer,
-    words: wordReducer
+    words: wordReducer,
+    settings: settingsReducer
 });
 
 

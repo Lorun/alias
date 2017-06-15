@@ -22,8 +22,6 @@ export class App extends Component {
         });
 
         this.boundActionCreators = bindActionCreators(actionCreators, store.dispatch);
-
-        console.log(store.getState());
     }
 
     componentDidMount() {

@@ -4,6 +4,9 @@ export const initialState = {
     token: null,
     user: {
         id: null,
+        name: null,
+        email: null,
+        avatar: null
     },
 };
 
@@ -15,6 +18,13 @@ export const reducer = (state = initialState, action) => {
                 ...state,
                 token: action.token,
                 user: action.user
+            };
+        case actionTypes.SET_USER_DATA:
+            return {
+                ...state,
+                user: {
+                    ...action.payload
+                }
             };
         default:
             return state;
