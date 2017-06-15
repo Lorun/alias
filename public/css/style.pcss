@@ -37,6 +37,7 @@ button {
 .app-form {
     background: #eee;
     position: fixed;
+    z-index: 999;
     left: 0;
     right: 0;
     bottom: 0;
@@ -159,6 +160,7 @@ button {
     background-color: var(--green);
     color: #fff;
     position: fixed;
+    z-index: 999;
     top: 0;
     left: 0;
     right: 0;
@@ -240,4 +242,56 @@ button {
 /* LOGOUT */
 .app-logout {
     width: 100%;
+}
+
+
+
+.rc-swipeout {
+    overflow: hidden;
+    position: relative;
+    &-content {
+        position: relative;
+        z-index: 10;
+    }
+    &-cover {
+        position: absolute;
+        z-index: 11;
+        background: transparent;
+        height: 100%;
+        top: 0;
+        display: none;
+    }
+    & .rc-swipeout-content,
+    & .rc-swipeout-actions {
+        transition: all 250ms;
+    }
+    &-actions {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        overflow: hidden;
+        white-space: nowrap;
+        &-left {
+            left: 0;
+            width: 0;
+        }
+        &-right {
+            right: 0;
+            width: 0;
+        }
+    }
+    &-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        z-index: 99;
+        &-text{
+            padding: 0 12px;
+        }
+    }
 }

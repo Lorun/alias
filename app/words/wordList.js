@@ -1,27 +1,32 @@
 import { h, Component } from 'preact';
+import Swipeout from 'rc-swipeout';
 
 export class WordsList extends Component {
 
     render(props, state) {
-        let listItems = Object.keys(props.words).sort((a, b) => b - a).map((id) => {
+        const listItems = Object.keys(props.words).sort((a, b) => b - a).map((id) => {
             let word = props.words[id];
             let className = 'wordsList-item' + (props.editableWord.id && props.editableWord.id === +id ? ' is-editable' : '');
-            return (
-                <li className={className} onClick={ props.handleSetEditableWord.bind(null, word.id) }>
-                    <span className="item-col">{word.text_en}</span>
-                    <span className="item-col">{word.text_ru}</span>
-                    <span className="item-controls">
-                        <button onClick={ props.handleDelete.bind(null, word.id) } className="wordsList-handle">×</button>
-                    </span>
-                </li>
+            return(
+                <Swipeout
+                    onClick={ props.handleSetEditableWord.bind(null, word.id) }
+                    right={[
+                        {
+                            text: 'delete',
+                            onPress: props.handleDelete.bind(null, word.id),
+                            style: { backgroundColor: 'red', color: 'white' },
+                            className: 'custom-class-2'
+                        }
+                    ]}
+                    autoClose
+                    children={<div className={className}><span className="item-col">{word.text_en}</span><span className="item-col">{word.text_ru}</span></div>}
+                />
             );
         });
         return(
             <div className="app-wordsList">
-                <ul>
-                    {listItems}
-                </ul>
+                {listItems}
             </div>
         );
-    }
+    };
 }
