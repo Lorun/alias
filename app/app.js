@@ -50,14 +50,18 @@ export class App extends Component {
         }
 
         event.target.reset();
+        this.toggleEditMode();
     }
 
     handleSetEditableWord(id) {
-        if (this.state.isLoading || !this.state.editMode) {
+        if (this.state.isLoading) {
             return;
         }
 
-        let word = this.state.items[id];
+
+        const word = this.state.items[id];
+
+        this.toggleEditMode();
 
         if (word) {
             this.boundActionCreators.setEditableWord(word.id, word.text_en, word.text_ru);
@@ -90,7 +94,7 @@ export class App extends Component {
                     <div className="header-title">Words</div>
                     { this.state.editMode
                         ? <button className="header-edit icon-close" onClick={this.toggleEditMode.bind(this)}></button>
-                        : <button className="header-edit icon-pencil-alt" onClick={this.toggleEditMode.bind(this)}></button> }
+                        : <button className="header-edit" onClick={this.toggleEditMode.bind(this)}><span className="icon-add"></span></button> }
                     <button className="header-settings icon-gear" onClick={props.router.navigate.bind(this, '/settings')}></button>
                     { this.state.isLoading ? <div className="header-loading" >Loading...</div> : '' }
                 </div>
