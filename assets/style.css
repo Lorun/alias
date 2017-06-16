@@ -606,6 +606,7 @@ button {
     font-size: 1rem;
     width: 100%;
     border-bottom: 1px solid #eee;
+    border-radius: 0;
 }
 .app-form .form-button {
     display: inline-block;
