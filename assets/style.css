@@ -626,7 +626,7 @@ button {
     box-shadow: inset 0 0.4rem 1.5rem rgba(0,0,0, 0.15);
 }
 .app-wordsList {
-    border-top: 1px solid #eeeeee;
+    border-top: 0.5px solid #eeeeee;
 
 }
 .app-wordsList .wordsList-handle {
@@ -636,7 +636,7 @@ button {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 0.5px solid #eeeeee;
     -webkit-user-select: none;
        -moz-user-select: none;
         -ms-user-select: none;
