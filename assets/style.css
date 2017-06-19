@@ -630,14 +630,21 @@ button {
     border-top: 0.5px solid #eeeeee;
 
 }
+.app-wordsList .rc-swipeout {
+    margin-left: -0.5rem;
+    padding-left: 0.5rem;
+}
 .app-wordsList .wordsList-handle {
     display: none;
+}
+.app-wordsList .wordsList-itemHolder {
+    margin-left: 0.5rem;
+    border-bottom: 0.5px solid #eeeeee;
 }
 .app-wordsList .wordsList-item {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    border-bottom: 0.5px solid #eeeeee;
     -webkit-user-select: none;
        -moz-user-select: none;
         -ms-user-select: none;
@@ -731,7 +738,7 @@ button {
     height: 24px;
     padding: 0;
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: normal;
     color: #fff;
 }
 .app-header .header-back:before {

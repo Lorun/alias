@@ -108,6 +108,7 @@ export class App extends Component {
                     editableWord={ editableWord }
                     handleDelete={ this.handleDelete.bind(this) }
                     handleSetEditableWord={ this.handleSetEditableWord.bind(this) }
+                    router={props.router}
                 />
             </div>
         );

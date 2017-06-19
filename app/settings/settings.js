@@ -31,7 +31,7 @@ export class Settings extends Component {
         return (
             <div id="wordsApp">
                 <div className="app-header">
-                    <button className="btn header-back icon-arrow-left" onClick={ props.router.navigate.bind(this, '/') }></button>
+                    <button className="btn header-back icon-arrow-left" onClick={ props.router.navigate.bind(this, '/') }>Words</button>
                     <div className="header-title">Settings</div>
                 </div>
 
