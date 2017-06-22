@@ -535,6 +535,10 @@ template {
 .btn--black:active {
     background-color: #777;
 }
+.btn--green {
+    background-color: #20cb9c;
+    color: #fff;
+}
 * {
     box-sizing: border-box;
 }
@@ -562,6 +566,11 @@ button {
 }
 #wordsApp.is-editMode {
     padding-bottom: 5rem;
+}
+.app-loading {
+    padding: 0.5em;
+    text-align: center;
+    color: rgba(0,0,0, 0.5);
 }
 .app-form {
     background: #fff;
@@ -780,13 +789,13 @@ button {
     padding-top: 1rem;
 }
 .app-settings .settings-userInfo .userInfo-avatar {
-    display: inline-block;
+    display: block;
     width: 50px;
     height: 50px;
     background-size: cover;
     background-position: 50% 50%;
     border-radius: 25px;
-    margin-bottom: 0.5em;
+    margin: 0 auto 0.5em;
 }
 .app-settings .settings-userInfo .userInfo-name {
     font-weight: bold;
@@ -796,66 +805,6 @@ button {
 /* LOGOUT */
 .app-logout {
     width: 100%;
-}
-.rc-swipeout {
-    overflow: hidden;
-    position: relative;
-}
-.rc-swipeout-content {
-    position: relative;
-    z-index: 10;
-}
-.rc-swipeout-cover {
-    position: absolute;
-    z-index: 11;
-    background: transparent;
-    height: 100%;
-    top: 0;
-    display: none;
-}
-.rc-swipeout .rc-swipeout-content,
-    .rc-swipeout .rc-swipeout-actions {
-    -webkit-transition: all 250ms;
-    transition: all 250ms;
-}
-.rc-swipeout-actions {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    overflow: hidden;
-    white-space: nowrap;
-}
-.rc-swipeout-actions-left {
-    left: 0;
-    width: 0;
-}
-.rc-swipeout-actions-right {
-    right: 0;
-    width: 0;
-}
-.rc-swipeout-btn {
-    -webkit-box-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    position: relative;
-    overflow: hidden;
-    z-index: 99;
-}
-.rc-swipeout-btn-text{
-    padding: 0 0.75rem;
 }
 .icon-add {
     display: inline-block;
@@ -925,14 +874,39 @@ button {
     font-weight: bold;
 }
 .swipe .swipe-delete {
-    background-color: red;
+    background-color: #ff4828;
     color: #fff;
 }
 .swipe .swipe-edit {
-    background-color: #a0a0a0;
+    background-color: #ffbd5a;
     color: #fff;
 }
 .swipe.is-animated .swipe-content {
     -webkit-transition: right 0.2s ease-out;
     transition: right 0.2s ease-out;
+}
+.app-learButton {
+    padding: 1rem;
+}
+.app-learButton .btn {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+.app-word .word-container {
+    padding: 1rem;
+}
+.app-word .word-card {
+    padding: 2rem 1rem;
+    border: 1px solid #eee;
+    text-align: center;
+    font-weight: bold;
+}
+.app-word .word-navigation {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1rem;
+    text-align: center;
 }

@@ -90,6 +90,7 @@ export class App extends Component {
     }
 
     render(props, { items, editableWord }) {
+        const wordKeys = Object.keys(items);
         return(
             <div id="wordsApp" className={this.state.editMode ? 'is-editMode' : ''}>
                 <div className="app-header">
@@ -112,6 +113,9 @@ export class App extends Component {
                     handleSetEditableWord={ this.handleSetEditableWord.bind(this) }
                     router={props.router}
                 />
+                <div className="app-learButton">
+                    <button className="btn btn--big btn--green" onClick={props.router.navigate.bind(this, '/word#'+wordKeys[wordKeys.length-1])}>Start learning</button>
+                </div>
             </div>
         );
     }
