@@ -22,7 +22,9 @@ export class Settings extends Component {
 
     componentDidMount() {
         this.token = authSelectors.getToken();
-        this.boundActionCreators.getUserData(this.token);
+        if (!this.state.user.id) {
+            this.boundActionCreators.getUserData(this.token);
+        }
     }
 
     render(props, state) {

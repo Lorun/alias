@@ -10,7 +10,6 @@ import * as authSelectors from './auth/selector';
 import { WordForm } from './words/wordForm';
 import { WordsList } from './words/wordList';
 
-
 export class App extends Component {
     constructor() {
         super();
@@ -26,7 +25,10 @@ export class App extends Component {
 
     componentDidMount() {
         this.token = authSelectors.getToken();
-        this.boundActionCreators.get(this.token);
+
+        if (Object.keys(this.state.items).length === 0) {
+            this.boundActionCreators.get(this.token);
+        }
     }
 
     handleSubmit(event) {

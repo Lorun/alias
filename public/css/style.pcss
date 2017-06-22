@@ -102,7 +102,7 @@ button {
 .app-wordsList {
     border-top: 0.5px solid #eeeeee;
 
-    .rc-swipeout {
+    .swipe {
         margin-left: -0.5rem;
         padding-left: 0.5rem;
     }
@@ -112,6 +112,8 @@ button {
     }
 
     .wordsList-itemHolder {
+        display: block;
+        width: calc(100% - 0.5rem);
         margin-left: 0.5rem;
         border-bottom: 0.5px solid #eeeeee;
     }
@@ -359,5 +361,59 @@ button {
         height: 1.25em;
         left: 0.5625em;
         top: 0;
+    }
+}
+
+
+
+.swipe {
+    position: relative;
+    overflow: hidden;
+
+    .swipe-content {
+        position: relative;
+        z-index: 2;
+        background-color: #fff;
+    }
+    .swipe-controls {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 0;
+
+
+        color: #fff;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        button {
+            position: relative;
+            display: inline-block;
+            border: none;
+            user-select: none;
+            padding: 0 1em;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            height: 100%;
+            font-weight: bold;
+        }
+    }
+
+    .swipe-delete {
+        background-color: red;
+        color: #fff;
+    }
+
+    .swipe-edit {
+        background-color: #a0a0a0;
+        color: #fff;
+    }
+
+    &.is-animated {
+        .swipe-content {
+            transition: right 0.2s ease-out;
+        }
     }
 }
