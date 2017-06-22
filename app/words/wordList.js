@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import Swipeout from 'rc-swipeout';
+import { WordSwipe } from './wordSwipe';
 
 export class WordsList extends Component {
 
@@ -8,28 +8,12 @@ export class WordsList extends Component {
             let word = props.words[id];
             return(
                 <div className="wordsList-itemHolder">
-                    <Swipeout
-                        right={[
-                            {
-                                text: 'edit',
-                                onPress: props.handleSetEditableWord.bind(null, word.id),
-                                style: { backgroundColor: '#a0a0a0', color: 'white' }
-                            },
-                            {
-                                text: 'delete',
-                                onPress: props.handleDelete.bind(null, word.id),
-                                style: { backgroundColor: '#ff3644', color: 'white' }
-                            }
-                        ]}
-                        left={[
-                            {
-                                text: 'learn',
-                                onPress: props.router.navigate.bind(this, '/word#'+word.id),
-                                style: { backgroundColor: '#ffc688', color: 'black' }
-                            }
-                        ]}
-                        autoClose
+                    <WordSwipe
                         children={<div className="wordsList-item"><span className="item-col">{word.text_en}</span><span className="item-col">{word.text_ru}</span></div>}
+                        buttons={[
+                            {text: 'Edit', onPress: props.handleSetEditableWord.bind(null, word.id), className: 'swipe-edit'},
+                            {text: 'Delete', onPress: props.handleDelete.bind(null, word.id), className: 'swipe-delete'},
+                        ]}
                     />
                 </div>
             );

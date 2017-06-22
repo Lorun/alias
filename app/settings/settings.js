@@ -22,28 +22,33 @@ export class Settings extends Component {
 
     componentDidMount() {
         this.token = authSelectors.getToken();
-        this.boundActionCreators.getUserData(this.token);
+        if (!this.state.user.id) {
+            this.boundActionCreators.getUserData(this.token);
+        }
     }
 
     render(props, state) {
         const user = this.state.user;
         const avatar_style = "background-image: url(" + user.avatar + ")";
+        const appSettings = (
+            <div className="app-settings">
+                <div className="settings-userInfo">
+                    <span className="userInfo-avatar" style={avatar_style}></span>
+                    <h3 className="userInfo-name">{user.name}</h3>
+                </div>
+
+                <br/>
+                <Logout router={ props.router } />
+            </div>
+        );
+
         return (
             <div id="wordsApp">
                 <div className="app-header">
                     <button className="btn header-back icon-arrow-left" onClick={ props.router.navigate.bind(this, '/') }>Words</button>
                     <div className="header-title">Settings</div>
                 </div>
-
-                <div className="app-settings">
-                    <div className="settings-userInfo">
-                        <span className="userInfo-avatar" style={avatar_style}></span>
-                        <h3 className="userInfo-name">{user.name}</h3>
-                    </div>
-
-                    <br/>
-                    <Logout router={ props.router } />
-                </div>
+                { user.id ? appSettings : <div className="app-loading">Loading</div> }
             </div>
         );
     }

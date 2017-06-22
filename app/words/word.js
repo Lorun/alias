@@ -44,8 +44,10 @@ export class Word extends Component {
                     <div className="header-title">Words Learning</div>
                 </div>
                 <div className="word-container">
-                    {word.text_en}:
-                    {word.text_ru}
+                    <div className="word-card">
+                        {word.text_en} <br /><br />
+                        {word.text_ru}
+                    </div>
                     <div className="word-navigation">
                         { prev_id && <button className="btn" onClick={props.router.navigate.bind(this, '/word#'+prev_id)}><span className="icon-arrow-left"></span>Prev</button> }
                         { next_id && <button className="btn" onClick={props.router.navigate.bind(this, '/word#'+next_id)}>Next<span className="icon-arrow-right"></span></button> }
