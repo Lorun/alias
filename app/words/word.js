@@ -45,7 +45,7 @@ export class Word extends Component {
                 </div>
                 <div className="word-container">
                     <div className="word-card">
-                        {word.text_en} <br /><br />
+                        <b>{word.text_en}</b> <br /><br />
                         {word.text_ru}
                     </div>
                     <div className="word-navigation">
