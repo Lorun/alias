@@ -10,6 +10,8 @@ import * as authSelectors from './auth/selector';
 import { WordForm } from './words/wordForm';
 import { WordsList } from './words/wordList';
 
+const clickEventType = ('click' in window) ? 'click' : 'touchend';
+
 export class App extends Component {
     constructor() {
         super();
@@ -88,11 +90,7 @@ export class App extends Component {
         ev && ev.stopPropagation();
 
         if (!this.state.editMode) {
-            window.addEventListener('touchend', (ev) => {
-                ev.preventDefault();
-                ev.target.click();
-            });
-            window.addEventListener('click', this.handleClickOutOfForm());
+            window.addEventListener(clickEventType, this.handleClickOutOfForm());
         }
 
         this.boundActionCreators.toggleEditMode();
@@ -108,9 +106,9 @@ export class App extends Component {
         return (() => {
             const handler = (ev) => {
                 ev.stopPropagation();
-                if (!ev.target.closest('.app-form')) {
+                if (!ev.target.closest('.app-form') && !ev.target.closest('.header-edit')) {
                     this.toggleEditMode();
-                    window.removeEventListener('click', handler);
+                    window.removeEventListener(clickEventType, handler);
                 }
             };
             return handler;
