@@ -4,7 +4,8 @@ export const initialState = {
     items: {},
     isLoading: false,
     editableWord: {},
-    editMode: false
+    editMode: false,
+    isFlipped: false
 };
 
 export const reducer = (state = initialState, action) => {

@@ -535,6 +535,14 @@ template {
 .btn--black:active {
     background-color: #777;
 }
+.btn--gray {
+    background-color: #eeeeee;
+    color: #20cb9c;
+    font-weight: bold;
+}
+.btn--gray:active {
+    background-color: #e2e2e2;
+}
 .btn--green {
     background-color: #20cb9c;
     color: #fff;
@@ -560,12 +568,11 @@ button {
     background: transparent;
 }
 #wordsApp {
+    min-height: 100%;
+    
     padding-top: 2.5rem;
     color: #444;
     font-size: 0.875rem;
-}
-#wordsApp.is-editMode {
-    padding-bottom: 5rem;
 }
 .app-loading {
     padding: 0.5em;
@@ -580,7 +587,7 @@ button {
     right: 0;
     z-index: 990;
     overflow: hidden;
-    padding: 0 0.5rem;
+    padding: 0 1rem;
     box-shadow: 0 0 20px rgba(68,68,68, 0.2);
 
     -webkit-transform: translate(0, -100%);
@@ -893,13 +900,94 @@ button {
     text-align: center;
     font-weight: bold;
 }
+.app-word {
+    background-color: #f7f5f4;
+}
 .app-word .word-container {
-    padding: 1rem;
+    position: absolute;
+    top: 2.5rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 1rem 2rem 4.25rem 2rem;
 }
 .app-word .word-card {
-    padding: 2rem 1rem;
-    border: 1px solid #eee;
+    -webkit-perspective: 1000px;
+            perspective: 1000px;
+    height: 250px;
+    width: 100%;
+}
+.app-word .word-card.is-flipped .card-front {
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+}
+.app-word .word-card.is-flipped .card-back {
+    -webkit-transform: rotateY(0deg);
+            transform: rotateY(0deg);
+}
+.app-word .word-card .card-container {
+    position: relative;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+}
+.app-word .word-card .card-front,
+        .app-word .word-card .card-back {
+    width: 100%;
+    height: 250px;
+    padding: 1.75rem 1rem 2rem;
+    border-top: 5px solid #eadccd;
+    border-radius: 0 0 0.5rem 0.5rem;
+    background-color: #fff;
+    font-size: 2em;
+    line-height: 1.3;
     text-align: center;
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    box-shadow: 0 1em 0.5em -0.75em rgba(168,140,98, 0.2), 0 0.5em 1.25em rgba(168,140,98, 0.15);
+}
+.app-word .word-card .card-front {
+    z-index: 2;
+    -webkit-transform: rotateY(0deg);
+            transform: rotateY(0deg);
+}
+.app-word .word-card .card-back {
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+}
+.app-word .word-card .card-lang {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    text-align: center;
+    color: #777;
 }
 .app-word .word-navigation {
     position: fixed;
@@ -908,4 +996,10 @@ button {
     bottom: 0;
     padding: 1rem;
     text-align: center;
+}
+.app-word .word-navigation .btn--prev {
+    float: left;
+}
+.app-word .word-navigation .btn--next {
+    float: right;
 }

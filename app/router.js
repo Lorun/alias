@@ -29,8 +29,13 @@ export class Router extends Component {
         super();
 
         this.updatePath();
+
+        window.addEventListener("popstate", this.handleHashChange.bind(this));
     }
 
+    handleHashChange(ev) {
+        this.updatePath();
+    }
 
     updatePath(path) {
         if (path) {

@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 
 export class WordForm extends Component {
+
     render(props) {
         return(
             <div className="app-form">

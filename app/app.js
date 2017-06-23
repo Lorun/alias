@@ -63,7 +63,9 @@ export class App extends Component {
 
         const word = this.state.items[id];
 
-        this.toggleEditMode();
+        if (!this.state.editMode) {
+            this.toggleEditMode();
+        }
 
         if (word) {
             this.boundActionCreators.setEditableWord(word.id, word.text_en, word.text_ru);
@@ -82,11 +84,33 @@ export class App extends Component {
         }
     }
 
-    toggleEditMode() {
+    toggleEditMode(ev) {
+        ev && ev.stopPropagation();
+
+        if (!this.state.editMode) {
+            window.addEventListener('click', this.handleClickOutOfForm());
+        }
+
         this.boundActionCreators.toggleEditMode();
+
         if (this.state.editableWord.id) {
             this.boundActionCreators.unsetEditableWord();
         }
+    }
+
+
+
+    handleClickOutOfForm() {
+        return (() => {
+            const handler = (ev) => {
+                ev.stopPropagation();
+                if (!ev.target.closest('.app-form')) {
+                    this.toggleEditMode();
+                    window.removeEventListener('click', handler);
+                }
+            };
+            return handler;
+        })();
     }
 
     render(props, { items, editableWord }) {

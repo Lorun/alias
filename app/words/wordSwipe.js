@@ -58,8 +58,6 @@ export class WordSwipe extends Component {
         if (!this.state.isOpened) {
             this.setState({isAnimated: false});
         }
-        //this.start.x = this.start.x + ev.touches[0].clientX;
-        //this.start.y = this.start.y + ev.touches[0].clientY;
         this.start.x = this.end.x = ev.touches[0].pageX;
         this.start.y = this.end.y = ev.touches[0].pageY;
         this.controlsWidth = ev.currentTarget.children[1].offsetWidth;
@@ -74,12 +72,6 @@ export class WordSwipe extends Component {
 
         this.deltaX = this.start.x - this.end.x;
         rightOffset = this.deltaX;
-
-        /*if (rightOffset > 4) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'visible';
-        }*/
 
         if (this.calculateDirection() === 'LEFT') {
             ev.preventDefault();
@@ -108,8 +100,11 @@ export class WordSwipe extends Component {
     }
 
     handleButtonClick(callback) {
-        this.closeControls();
-        callback();
+        return (ev) => {
+            ev.stopPropagation();
+            this.closeControls();
+            callback && callback();
+        };
     }
 
 
@@ -150,7 +145,7 @@ export class WordSwipe extends Component {
         const classes = this.state.isAnimated ? 'swipe is-animated' : 'swipe';
         const buttons = props.buttons.map((btn) => {
             return (
-                <button className={'swipe-btn ' + btn.className} onClick={this.handleButtonClick.bind(this, btn.onPress)} name="app-swipe-btn">{btn.text}</button>
+                <button className={'swipe-btn ' + btn.className} onClick={this.handleButtonClick(btn.onPress)} name="app-swipe-btn">{btn.text}</button>
             )
         });
 
