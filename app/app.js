@@ -88,7 +88,11 @@ export class App extends Component {
         ev && ev.stopPropagation();
 
         if (!this.state.editMode) {
-            window.document.addEventListener('click', this.handleClickOutOfForm());
+            window.addEventListener('touchend', (ev) => {
+                ev.preventDefault();
+                ev.target.click();
+            });
+            window.addEventListener('click', this.handleClickOutOfForm());
         }
 
         this.boundActionCreators.toggleEditMode();
@@ -106,7 +110,7 @@ export class App extends Component {
                 ev.stopPropagation();
                 if (!ev.target.closest('.app-form')) {
                     this.toggleEditMode();
-                    window.document.removeEventListener('click', handler);
+                    window.removeEventListener('click', handler);
                 }
             };
             return handler;
