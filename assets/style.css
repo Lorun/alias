@@ -926,6 +926,7 @@ button {
        -moz-user-select: none;
         -ms-user-select: none;
             user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 .app-word .word-card.is-flipped .card-front {
     -webkit-transform: rotateY(180deg);
@@ -941,10 +942,6 @@ button {
     transition: 0.4s;
     -webkit-transform-style: preserve-3d;
             transform-style: preserve-3d;
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
 }
 .app-word .word-card .card-front,
         .app-word .word-card .card-back {
