@@ -106,8 +106,11 @@ export class App extends Component {
         return (() => {
             const handler = (ev) => {
                 ev.stopPropagation();
+                console.log('click');
                 if (!ev.target.closest('.app-form') && !ev.target.closest('.header-edit')) {
-                    this.toggleEditMode();
+                    if (this.state.editMode) {
+                        this.toggleEditMode();
+                    }
                     window.removeEventListener(clickEventType, handler);
                 }
             };
