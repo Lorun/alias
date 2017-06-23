@@ -88,7 +88,7 @@ export class App extends Component {
         ev && ev.stopPropagation();
 
         if (!this.state.editMode) {
-            window.addEventListener('click', this.handleClickOutOfForm());
+            window.document.addEventListener('click', this.handleClickOutOfForm());
         }
 
         this.boundActionCreators.toggleEditMode();
@@ -106,7 +106,7 @@ export class App extends Component {
                 ev.stopPropagation();
                 if (!ev.target.closest('.app-form')) {
                     this.toggleEditMode();
-                    window.removeEventListener('click', handler);
+                    window.document.removeEventListener('click', handler);
                 }
             };
             return handler;

@@ -968,6 +968,10 @@ button {
         -ms-flex-pack: center;
             justify-content: center;
     box-shadow: 0 1em 0.5em -0.75em rgba(168,140,98, 0.2), 0 0.5em 1.25em rgba(168,140,98, 0.15);
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 .app-word .word-card .card-front {
     z-index: 2;
