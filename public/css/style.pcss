@@ -401,6 +401,7 @@ button {
         perspective: 1000px;
         height: 250px;
         width: 100%;
+        user-select: none;
 
         &.is-flipped {
             .card-front {
@@ -416,6 +417,7 @@ button {
 
             transition: 0.4s;
             transform-style: preserve-3d;
+            user-select: none;
         }
 
         .card-front,
@@ -443,8 +445,6 @@ button {
             justify-content: center;
 
             box-shadow: 0 1em 0.5em -0.75em rgba(#A88C62, 0.2), 0 0.5em 1.25em rgba(#A88C62, 0.15);
-
-            user-select: none;
         }
 
         .card-front {

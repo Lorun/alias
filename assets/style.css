@@ -922,6 +922,10 @@ button {
             perspective: 1000px;
     height: 250px;
     width: 100%;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 .app-word .word-card.is-flipped .card-front {
     -webkit-transform: rotateY(180deg);
@@ -937,6 +941,10 @@ button {
     transition: 0.4s;
     -webkit-transform-style: preserve-3d;
             transform-style: preserve-3d;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 .app-word .word-card .card-front,
         .app-word .word-card .card-back {
@@ -968,10 +976,6 @@ button {
         -ms-flex-pack: center;
             justify-content: center;
     box-shadow: 0 1em 0.5em -0.75em rgba(168,140,98, 0.2), 0 0.5em 1.25em rgba(168,140,98, 0.15);
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
 }
 .app-word .word-card .card-front {
     z-index: 2;
